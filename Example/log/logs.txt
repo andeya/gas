@@ -1,6 +1,0 @@
-[2016-06-09 11:29:13][200][127.0.0.1] GET / Params:  ExecTime: 3.012568ms
-[2016-06-09 11:29:13][404][127.0.0.1] GET /favicon.ico Params:  ExecTime: 7.765µs
-[2016-06-09 11:29:15][200][127.0.0.1] GET /user/gas Params:  ExecTime: 446.023µs
-[2016-06-26 13:28:15][200][127.0.0.1] GET / Params:  ExecTime: 2.742463ms
-[2016-06-26 13:28:16][200][127.0.0.1] GET /user/gas Params:  ExecTime: 499.827µs
-[2016-06-26 13:28:20][200][127.0.0.1] GET /user/gas Params:  ExecTime: 265.033µs
