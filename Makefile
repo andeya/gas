@@ -8,7 +8,7 @@ test:
 	go test -v ./
 
 coverage:
-	go test -v -cover -covermode=count -coverprofile=coverage.txt ./
+	sh test.sh count
 
 html: coverage
 	go tool cover -html=coverage.txt && unlink coverage.txt
