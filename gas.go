@@ -94,6 +94,7 @@ import (
 	"github.com/go-gas/Config"
 	"github.com/go-gas/gas/model/MySQL"
 	"github.com/valyala/fasthttp"
+	"os"
 	"strings"
 	"sync"
 )
@@ -180,6 +181,10 @@ func New(configPath ...string) *gas {
 	g := &gas{}
 
 	// init logger
+	if _, err := os.Stat("log/system.log"); os.IsNotExist(err) {
+		os.Mkdir("log", 0700)
+	}
+
 	g.Logger = logger.New("log/system.log")
 
 	// init pool
