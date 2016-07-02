@@ -167,6 +167,10 @@ func (ctx *Context) JSON(status int, data interface{}) error {
 	return errr
 }
 
+func (ctx *Context) SetHeader(key, value string) {
+	ctx.Response.Header.Set(key, value)
+}
+
 // Get model using context in controller
 func (ctx *Context) GetModel() model.ModelInterface {
 	m := ctx.gas.NewModel()
