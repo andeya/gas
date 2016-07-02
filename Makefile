@@ -8,7 +8,7 @@ test:
 	go test -v ./
 
 coverage:
-	sh test.sh atomic
+	sh test.sh count
 
 html: coverage
 	go tool cover -html=coverage.txt && unlink coverage.txt
