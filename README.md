@@ -125,35 +125,35 @@ g.Run()
 
 Using [go-web-framework-benchmark](https://github.com/smallnest/go-web-framework-benchmark) to benchmark with another web fframework.
 
-<img src="https://raw.githubusercontent.com/go-gas/gas/master/benchmark.png" alt="go-gas-benchmark" />
+<img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/benchmark.png" alt="go-gas-benchmark" />
 
 #### Benchmark-alloc
 
-<img src="https://raw.githubusercontent.com/go-gas/gas/master/benchmark_alloc.png" alt="go-gas-benchmark-alloc" />
+<img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/benchmark_alloc.png" alt="go-gas-benchmark-alloc" />
 
 #### Benchmark-latency
 
-<img src="https://raw.githubusercontent.com/go-gas/gas/master/benchmark_latency.png" alt="go-gas-benchmark-latency" />
+<img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/benchmark_latency.png" alt="go-gas-benchmark-latency" />
 
 #### Benchmark-pipeline
 
-<img src="https://raw.githubusercontent.com/go-gas/gas/master/benchmark-pipeline.png" alt="go-gas-benchmark-pipeline" />
+<img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/benchmark-pipeline.png" alt="go-gas-benchmark-pipeline" />
 
 ## Concurrency
 
-<img src="https://raw.githubusercontent.com/go-gas/gas/master/concurrency.png" alt="go-gas-concurrency" />
+<img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/concurrency.png" alt="go-gas-concurrency" />
 
 #### Concurrency-alloc
 
-<img src="https://raw.githubusercontent.com/go-gas/gas/master/concurrency_alloc.png" alt="go-gas-concurrency-alloc" />
+<img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/concurrency_alloc.png" alt="go-gas-concurrency-alloc" />
 
 #### Concurrency-latency
 
-<img src="https://raw.githubusercontent.com/go-gas/gas/master/concurrency_latency.png" alt="go-gas-concurrency-latency" />
+<img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/concurrency_latency.png" alt="go-gas-concurrency-latency" />
 
 #### Concurrency-pipeline
 
-<img src="https://raw.githubusercontent.com/go-gas/gas/master/concurrency-pipeline.png" alt="go-gas-concurrency-pipeline" />
+<img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/concurrency-pipeline.png" alt="go-gas-concurrency-pipeline" />
 
 ## Benchmark conclusion
 
