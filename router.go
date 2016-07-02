@@ -6,8 +6,6 @@ import (
 	"github.com/valyala/fasthttp"
 	"reflect"
 	"strings"
-	//"github.com/julienschmidt/httprouter"
-	//"github.com/julienschmidt/httprouter"
 )
 
 var supportRestProto = [7]string{"GET", "POST", "DELETE", "HEAD", "OPTIONS", "PUT", "PATCH"}
@@ -266,6 +264,7 @@ func (r *Router) StaticPath(dir string) {
 	//	r.URL.Path = p.ByName("filepath")
 	//	fileServer.ServeHTTP(w, r)
 	//})
+	r.Router.ServeFiles("/"+dir+"/*filepath", dir)
 }
 
 // REST for set all REST route
