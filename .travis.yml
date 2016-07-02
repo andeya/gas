@@ -17,8 +17,6 @@ install:
   - go get -t -v ./...
 
 script:
-  - go test -v ./model/MySQL
-  - go test -v ./validator
   - make coverage
 
 after_success:
