@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/go-gas/gas/master/logo.jpg" alt="go-gas" width="200px" />
 
-[![Build Status](https://api.travis-ci.org/go-gas/gas.svg?branch=master)](https://api.travis-ci.org/go-gas/gas.svg) [![codecov](https://codecov.io/gh/go-gas/gas/branch/master/graph/badge.svg)](https://codecov.io/gh/go-gas/gas) [![Go Report Card](https://goreportcard.com/badge/github.com/go-gas/gas)](https://goreportcard.com/report/github.com/go-gas/gas)
+[![Build Status](https://travis-ci.org/go-gas/gas.svg?branch=master)](https://travis-ci.org/go-gas/gas) [![codecov](https://codecov.io/gh/go-gas/gas/branch/master/graph/badge.svg)](https://codecov.io/gh/go-gas/gas) [![Go Report Card](https://goreportcard.com/badge/github.com/go-gas/gas)](https://goreportcard.com/report/github.com/go-gas/gas)
 
 Gas is a Web framework written in Go. And this is not a total complete project.
 
@@ -19,20 +19,23 @@ The workable feature is:
 
 And Model is not complete yet. Just finished MySQL sql Builder
 
-##### all feature you can see in Example Directory.
+##### all feature you can see in [gas-example](https://github.com/go-gas/example).
 
 # Install
+
 ```
 $ go get github.com/go-gas/gas
 ```
 
 # Run demo
+
 ```
-$ cd $GOPATH/src/github.com/go-gas/gas/Example
+$ git clone https://github.com/go-gas/example.git && cd example
 $ go run main.go
 ```
 
 # Your project file structure
+
     |-- $GOPATH
     |   |-- src
     |       |--Your_Project_Name
@@ -60,15 +63,19 @@ import (
 ```
 
 ### New
+
 ```go
 g := gas.New() // will load "config/default.yaml"
 ```
+
 or
+
 ```go
 g := gas.New("config/path")
 ```
 
 ### Register Routes
+
 ```go
 routers.RegistRout(g.Router)
 ```
@@ -94,6 +101,7 @@ func RegistRout(r *gas.Router)  {
 ```
 
 ### Register middleware
+
 ```go
 g.Router.Use(middleware.LogMiddleware)
 ```
