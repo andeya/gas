@@ -20,7 +20,7 @@ func TestRouter_Get(t *testing.T) {
 	g := New("testfiles/config_test.yaml")
 
 	g.Router.Get("/test", func(c *Context) error {
-		return c.STRING(200, "TEST")
+		return c.STRING(http.StatusOK, "TEST")
 	})
 
 	e := newHttpExpect(t, g.Router.Handler)
@@ -32,7 +32,7 @@ func TestRouter_Post(t *testing.T) {
 	g := New("testfiles/config_test.yaml")
 
 	g.Router.Post("/test", func(c *Context) error {
-		return c.STRING(200, c.GetParam("Test"))
+		return c.STRING(http.StatusOK, c.GetParam("Test"))
 	})
 
 	e := newHttpExpect(t, g.Router.Handler)
@@ -46,7 +46,7 @@ func TestRouter_Put(t *testing.T) {
 	g := New("testfiles/config_test.yaml")
 
 	g.Router.Put("/test", func(c *Context) error {
-		return c.STRING(200, c.GetParam("Test"))
+		return c.STRING(http.StatusOK, c.GetParam("Test"))
 	})
 
 	e := newHttpExpect(t, g.Router.Handler)
@@ -60,7 +60,7 @@ func TestRouter_Patch(t *testing.T) {
 	g := New("testfiles/config_test.yaml")
 
 	g.Router.Patch("/", func(c *Context) error {
-		return c.STRING(200, c.GetParam("Test"))
+		return c.STRING(http.StatusOK, c.GetParam("Test"))
 	})
 
 	e := newHttpExpect(t, g.Router.Handler)
@@ -74,7 +74,7 @@ func TestRouter_Delete(t *testing.T) {
 	g := New("testfiles/config_test.yaml")
 
 	g.Router.Delete("/", func(c *Context) error {
-		return c.STRING(200, "Deleted")
+		return c.STRING(http.StatusOK, "Deleted")
 	})
 
 	e := newHttpExpect(t, g.Router.Handler)
@@ -88,7 +88,7 @@ func TestRouter_Options(t *testing.T) {
 	g := New("testfiles/config_test.yaml")
 
 	g.Router.Options("/", func(c *Context) error {
-		return c.STRING(200, "Option")
+		return c.STRING(http.StatusOK, "Option")
 	})
 
 	e := newHttpExpect(t, g.Router.Handler)
@@ -102,7 +102,7 @@ func TestRouter_Head(t *testing.T) {
 	g := New("testfiles/config_test.yaml")
 
 	g.Router.Head("/", func(c *Context) error {
-		return c.STRING(200, "Head")
+		return c.STRING(http.StatusOK, "Head")
 	})
 
 	e := newHttpExpect(t, g.Router.Handler)
@@ -116,10 +116,10 @@ type testController struct {
 }
 
 func (cn *testController) Get(c *Context) error {
-	return c.STRING(200, "Get Test")
+	return c.STRING(http.StatusOK, "Get Test")
 }
 func (cn *testController) Post(c *Context) error {
-	return c.STRING(200, "Post Test"+c.GetParam("Test"))
+	return c.STRING(http.StatusOK, "Post Test"+c.GetParam("Test"))
 }
 
 func TestRouter_REST(t *testing.T) {

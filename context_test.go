@@ -55,7 +55,7 @@ func TestHeader(t *testing.T) {
 	// set route
 	g.Router.Get("/", func(ctx *Context) error {
 		ctx.SetHeader("Version", "1.0")
-		return ctx.STRING(200, "Test Header")
+		return ctx.STRING(http.StatusOK, "Test Header")
 	})
 
 	// create fasthttp.RequestHandler
@@ -82,7 +82,7 @@ func TestHTML(t *testing.T) {
 
 	// set route
 	g.Router.Get("/", func(ctx *Context) error {
-		return ctx.HTML(200, testHTML)
+		return ctx.HTML(http.StatusOK, testHTML)
 	})
 
 	// create fasthttp.RequestHandler
@@ -101,14 +101,12 @@ func TestHTML(t *testing.T) {
 }
 
 func TestSTRINGResponse(t *testing.T) {
-	//as := assert.New(t)
-
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
 	// set route
 	g.Router.Get("/", func(ctx *Context) error {
-		return ctx.STRING(200, tstr)
+		return ctx.STRING(http.StatusOK, tstr)
 	})
 
 	// create fasthttp.RequestHandler
@@ -127,14 +125,12 @@ func TestSTRINGResponse(t *testing.T) {
 }
 
 func TestJSONResponse(t *testing.T) {
-	//as := assert.New(t)
-
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
 	// set route
 	g.Router.Get("/", func(ctx *Context) error {
-		return ctx.JSON(200, jsonMap)
+		return ctx.JSON(http.StatusOK, jsonMap)
 	})
 
 	// create fasthttp.RequestHandler

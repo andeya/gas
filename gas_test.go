@@ -1,15 +1,12 @@
 package gas
 
 import (
-	//"net/http"
-	//"net/http/httptest"
-	"testing"
-	//
 	"github.com/gavv/httpexpect"
 	"github.com/go-gas/gas/model/MySQL"
 	"github.com/stretchr/testify/assert"
 	"github.com/valyala/fasthttp"
 	"net/http"
+	"testing"
 )
 
 var (
@@ -50,7 +47,7 @@ func Testgas(t *testing.T) {
 	//rec := httptest.NewRecorder()
 	//g.Router.ServeHTTP(rec, req)
 	//
-	//assert.Equal(200, rec.Code)
+	//assert.Equal(http.StatusOK, rec.Code)
 	//assert.Equal(indexString, rec.Body.String())
 
 }
@@ -69,12 +66,12 @@ func Testgas(t *testing.T) {
 //	rec := httptest.NewRecorder()
 //	g.Router.ServeHTTP(rec, req)
 //
-//	assert.Equal(200, rec.Code)
+//	assert.Equal(http.StatusOK, rec.Code)
 //	assert.Equal(testStaticString, rec.Body.String())
 //}
 //
 func indexPage(ctx *Context) error {
-	return ctx.STRING(200, indexString)
+	return ctx.STRING(http.StatusOK, indexString)
 }
 
 func TestGas_NewModel(t *testing.T) {

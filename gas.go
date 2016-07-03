@@ -77,12 +77,12 @@
 //
 //  func (rc *RestController) Get(c *Engine.Context) error {
 //
-//  	return c.STRING(200, "Test Get")
+//  	return c.STRING(http.StatusOK, "Test Get")
 //  }
 //
 //  func (rc *RestController) Post(c *Engine.Context) error {
 //
-//  	return c.STRING(200, "Test Post")
+//  	return c.STRING(http.StatusOK, "Test Post")
 //  }
 package gas
 
