@@ -24,7 +24,7 @@ type Context struct {
 
 	// handlerFunc CHandler
 
-	gas *gas //
+	gas *Engine //
 
 	// DB
 	isUseDB bool
@@ -32,8 +32,8 @@ type Context struct {
 }
 
 // create context
-//func createContext(w *ResponseWriter, r *http.Request, g *gas) *Context {
-func createContext(r *fasthttp.RequestCtx, g *gas) *Context {
+//func createContext(w *ResponseWriter, r *http.Request, g *Engine) *Context {
+func createContext(r *fasthttp.RequestCtx, g *Engine) *Context {
 	c := &Context{}
 	//c.RespWriter = w
 	c.RequestCtx = r
@@ -43,10 +43,10 @@ func createContext(r *fasthttp.RequestCtx, g *gas) *Context {
 }
 
 // reset context when get it from buffer
-//func (ctx *Context) reset(w http.ResponseWriter, r *http.Request, g *gas) {
+//func (ctx *Context) reset(w http.ResponseWriter, r *http.Request, g *Engine) {
 //	ctx.Req = r
 //func (ctx *Context) reset(w http.ResponseWriter, r *http.Request, g *Goslim) {
-func (ctx *Context) reset(fctx *fasthttp.RequestCtx, ps *fasthttprouter.Params, g *gas) {
+func (ctx *Context) reset(fctx *fasthttp.RequestCtx, ps *fasthttprouter.Params, g *Engine) {
 
 	//ctx.Req = fctx.Request
 	//ctx.RespWriter.reset(w)

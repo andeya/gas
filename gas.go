@@ -38,7 +38,7 @@
 //  	"github.com/go-gas/gas"
 //  )
 //
-//  func RegistRout(r *gas.Router)  {
+//  func RegistRout(r *Engine.Router)  {
 //
 //  	r.Get("/", controllers.IndexPage)
 //  	r.Post("/post/:param", controllers.PostTest)
@@ -54,11 +54,11 @@
 //  	"github.com/go-gas/gas"
 //  )
 //
-//  func IndexPage(ctx *gas.Context) error {
+//  func IndexPage(ctx *Engine.Context) error {
 //  	return ctx.Render("", "views/layout.html", "views/index.html")
 //  }
 //
-//  func PostTest(ctx *gas.Context) error {
+//  func PostTest(ctx *Engine.Context) error {
 //  	a := map[string]string{
 //  		"Name": ctx.GetParam("param"),
 //  	}
@@ -75,12 +75,12 @@
 //  	gas.ControllerInterface
 //  }
 //
-//  func (rc *RestController) Get(c *gas.Context) error {
+//  func (rc *RestController) Get(c *Engine.Context) error {
 //
 //  	return c.STRING(200, "Test Get")
 //  }
 //
-//  func (rc *RestController) Post(c *gas.Context) error {
+//  func (rc *RestController) Post(c *Engine.Context) error {
 //
 //  	return c.STRING(200, "Test Post")
 //  }
@@ -88,10 +88,9 @@ package gas
 
 import (
 	"fmt"
+	"github.com/go-gas/Config"
 	"github.com/go-gas/gas/logger"
 	"github.com/go-gas/gas/model"
-	//"net/http"
-	"github.com/go-gas/Config"
 	"github.com/go-gas/gas/model/MySQL"
 	"github.com/valyala/fasthttp"
 	"os"
@@ -115,7 +114,7 @@ var defaultConfig = map[interface{}]interface{}{
 }
 
 type (
-	gas struct {
+	Engine struct {
 		Router *Router
 		Config *Config.Config
 		Model  *gasModel
@@ -133,8 +132,8 @@ type (
 // Ex:
 //  g := New()
 //  g.Run()
-func New(configPath ...string) *gas {
-	g := &gas{}
+func New(configPath ...string) *Engine {
+	g := &Engine{}
 
 	// init logger
 	if _, err := os.Stat("log/system.log"); os.IsNotExist(err) {
@@ -218,12 +217,12 @@ func defaultPanicHandler(c *Context, rcv interface{}) error {
 }
 
 // Load config from file
-func (g *gas) LoadConfig(configPath string) {
+func (g *Engine) LoadConfig(configPath string) {
 	g.Config.Load(configPath)
 }
 
 // Run framework
-func (g *gas) Run(addr ...string) {
+func (g *Engine) Run(addr ...string) {
 	listenAddr := ""
 	if len(addr) == 0 {
 		listenAddr = g.Config.GetString("ListenAddr") + ":" + g.Config.GetString("ListenPort")
@@ -237,7 +236,7 @@ func (g *gas) Run(addr ...string) {
 }
 
 // New database connection according to config settings
-//func (g *gas) NewDb() model.SlimDbInterface {
+//func (g *Engine) NewDb() model.SlimDbInterface {
 //	c := g.Config
 //
 //	var d model.SlimDbInterface
@@ -265,7 +264,7 @@ func (g *gas) Run(addr ...string) {
 //}
 
 // New model according to config settings
-func (g *gas) NewModel() model.ModelInterface {
+func (g *Engine) NewModel() model.ModelInterface {
 	// get db
 	// db := g.NewDb()
 	c := g.Config

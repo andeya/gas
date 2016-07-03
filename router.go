@@ -14,7 +14,7 @@ type (
 	// Router class include httprouter and gas
 	Router struct {
 		*fasthttprouter.Router
-		g           *gas
+		g           *Engine
 		middlewares []MiddlewareFunc
 	}
 
@@ -28,7 +28,7 @@ type (
 	PanicHandler func(*Context, interface{}) error
 )
 
-func newRouter(g *gas) *Router {
+func newRouter(g *Engine) *Router {
 	fastR := fasthttprouter.New()
 	r := &Router{}
 	r.Router = fastR

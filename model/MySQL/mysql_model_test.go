@@ -38,8 +38,6 @@ var (
 		"Age":      10,
 	}
 
-	// testG *gas.gas
-
 	// for travis-ci default mysql username and password
 	testConfig = map[string]string{
 		"Sqldriver": "MySQL",
