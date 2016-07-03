@@ -265,13 +265,13 @@ func (r *Router) StaticPath(dir string) {
 	//})
 	//r.Router.ServeFiles("/"+dir+"/*filepath", dir)
 
-	path := "/"+dir+"/*filepath"
+	path := "/" + dir + "/*filepath"
 	//absFilePath, _ := filepath.Abs(dir)
 
 	//println(absFilePath)
 
 	fs := &fasthttp.FS{
-		Root:               dir,
+		Root: dir,
 		//IndexNames:         []string{"index.html"},
 		GenerateIndexPages: false,
 		Compress:           true,
