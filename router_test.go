@@ -5,9 +5,17 @@ import (
 	"testing"
 )
 
-func TestRouter_Get(t *testing.T) {
-	//as := assert.New(t)
+func TestRouter_Static(t *testing.T) {
+	// new gas
+	g := New("testfiles/config_test.yaml")
 
+	e := newHttpExpect(t, g.Router.Handler)
+	e.GET("/testfiles/static.txt").Expect().
+		Status(http.StatusOK).
+		Body().Equal("This is a static file")
+}
+
+func TestRouter_Get(t *testing.T) {
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
@@ -20,8 +28,6 @@ func TestRouter_Get(t *testing.T) {
 }
 
 func TestRouter_Post(t *testing.T) {
-	//as := assert.New(t)
-
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
@@ -36,8 +42,6 @@ func TestRouter_Post(t *testing.T) {
 }
 
 func TestRouter_Put(t *testing.T) {
-	//as := assert.New(t)
-
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
@@ -49,19 +53,9 @@ func TestRouter_Put(t *testing.T) {
 	ee := e.PUT("/test").WithFormField("Test", "POSTDATA").Expect()
 	ee.Status(http.StatusOK)
 	ee.Body().Equal("POSTDATA")
-
-	//r, _ := http.NewRequest("PUT", "/test", nil)
-	//r.ParseForm()
-	//r.Form.Add("Test", "PUTED")
-	//w := httptest.NewRecorder()
-	//g.Router.ServeHTTP(w, r)
-	//as.Equal(200, w.Code)
-	//as.Equal("PUTED", w.Body.String())
 }
 
 func TestRouter_Patch(t *testing.T) {
-	//as := assert.New(t)
-
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
@@ -73,19 +67,9 @@ func TestRouter_Patch(t *testing.T) {
 	ee := e.PATCH("/").WithFormField("Test", "POSTDATA").Expect()
 	ee.Status(http.StatusOK)
 	ee.Body().Equal("POSTDATA")
-
-	//r, _ := http.NewRequest("PATCH", "/", nil)
-	//r.ParseForm()
-	//r.Form.Add("Test", "PATCHED")
-	//w := httptest.NewRecorder()
-	//g.Router.ServeHTTP(w, r)
-	//as.Equal(200, w.Code)
-	//as.Equal("PATCHED", w.Body.String())
 }
 
 func TestRouter_Delete(t *testing.T) {
-	//as := assert.New(t)
-
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
@@ -97,16 +81,9 @@ func TestRouter_Delete(t *testing.T) {
 	ee := e.DELETE("/").Expect()
 	ee.Status(http.StatusOK)
 	ee.Body().Equal("Deleted")
-
-	//r, _ := http.NewRequest("DELETE", "/", nil)
-	//w := httptest.NewRecorder()
-	//g.Router.ServeHTTP(w, r)
-	//as.Equal(200, w.Code)
 }
 
 func TestRouter_Options(t *testing.T) {
-	//as := assert.New(t)
-
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
@@ -118,16 +95,9 @@ func TestRouter_Options(t *testing.T) {
 	ee := e.OPTIONS("/").Expect()
 	ee.Status(http.StatusOK)
 	ee.Body().Equal("Option")
-
-	//r, _ := http.NewRequest("OPTIONS", "/", nil)
-	//w := httptest.NewRecorder()
-	//g.Router.ServeHTTP(w, r)
-	//as.Equal(200, w.Code)
 }
 
 func TestRouter_Head(t *testing.T) {
-	//as := assert.New(t)
-
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
@@ -139,11 +109,6 @@ func TestRouter_Head(t *testing.T) {
 	ee := e.HEAD("/").Expect()
 	ee.Status(http.StatusOK)
 	ee.Body().Equal("Head")
-
-	//r, _ := http.NewRequest("HEAD", "/", nil)
-	//w := httptest.NewRecorder()
-	//g.Router.ServeHTTP(w, r)
-	//as.Equal(200, w.Code)
 }
 
 type testController struct {
@@ -158,8 +123,6 @@ func (cn *testController) Post(c *Context) error {
 }
 
 func TestRouter_REST(t *testing.T) {
-	//as := assert.New(t)
-
 	var c = &testController{}
 
 	// new gas
@@ -176,18 +139,4 @@ func TestRouter_REST(t *testing.T) {
 	ee2 := e.POST("/User").WithFormField("Test", "POSTED").Expect()
 	ee2.Status(http.StatusOK)
 	ee2.Body().Equal("Post TestPOSTED")
-	//r, _ := http.NewRequest("GET", "/User", nil)
-	//w := httptest.NewRecorder()
-	//g.Router.ServeHTTP(w, r)
-	//as.Equal(200, w.Code)
-	//as.Equal("Get Test", w.Body.String())
-	//
-	//r, _ = http.NewRequest("POST", "/User", nil)
-	//r.ParseForm()
-	//r.Form.Add("Test", "POSTED")
-	//w = httptest.NewRecorder()
-	//g.Router.ServeHTTP(w, r)
-	//as.Equal(200, w.Code)
-	//as.Equal("Post Test"+"POSTED", w.Body.String())
-
 }

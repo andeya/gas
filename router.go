@@ -1,7 +1,6 @@
 package gas
 
 import (
-	//"net/http"
 	"github.com/buaazp/fasthttprouter"
 	"github.com/valyala/fasthttp"
 	"reflect"
