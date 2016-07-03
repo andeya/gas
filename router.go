@@ -263,7 +263,29 @@ func (r *Router) StaticPath(dir string) {
 	//	r.URL.Path = p.ByName("filepath")
 	//	fileServer.ServeHTTP(w, r)
 	//})
-	r.Router.ServeFiles("/"+dir+"/*filepath", dir)
+	//r.Router.ServeFiles("/"+dir+"/*filepath", dir)
+
+	path := "/"+dir+"/*filepath"
+	//absFilePath, _ := filepath.Abs(dir)
+
+	//println(absFilePath)
+
+	fs := &fasthttp.FS{
+		Root:               dir,
+		//IndexNames:         []string{"index.html"},
+		GenerateIndexPages: false,
+		Compress:           true,
+		AcceptByteRange:    true,
+	}
+	prefix := path[:len(path)-10]
+	stripSlashes := strings.Count(prefix, "/")
+	fs.PathRewrite = fasthttp.NewPathSlashesStripper(stripSlashes)
+
+	fsHandler := fs.NewRequestHandler()
+
+	r.GET(path, func(ctx *fasthttp.RequestCtx, _ fasthttprouter.Params) {
+		fsHandler(ctx)
+	})
 }
 
 // REST for set all REST route
