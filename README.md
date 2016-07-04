@@ -1,6 +1,6 @@
 # Gas
 
-<img src="https://raw.githubusercontent.com/go-gas/gas/master/logo.png" alt="go-gas" width="300px" />
+<img src="https://raw.githubusercontent.com/go-gas/gas/master/logo.png" alt="go-gas" />
 
 [![Build Status](https://travis-ci.org/go-gas/gas.svg?branch=master)](https://travis-ci.org/go-gas/gas) [![codecov](https://codecov.io/gh/go-gas/gas/branch/master/graph/badge.svg)](https://codecov.io/gh/go-gas/gas) [![Go Report Card](https://goreportcard.com/badge/github.com/go-gas/gas)](https://goreportcard.com/report/github.com/go-gas/gas)
 [![Join the chat at https://gitter.im/go-gas/gas](https://badges.gitter.im/go-gas/gas.svg)](https://gitter.im/go-gas/gas?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
