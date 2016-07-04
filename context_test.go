@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	jsonMap = map[string]string{
+	jsonMap = JSON{
 		"Test": "index page",
 	}
 

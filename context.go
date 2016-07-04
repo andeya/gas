@@ -3,16 +3,15 @@ package gas
 import (
 	"encoding/json"
 	"errors"
-	"github.com/go-gas/gas/model"
-	//"github.com/julienschmidt/httprouter"
-	//"golang.org/x/net/context"
-	"html/template"
-	//"net/http"
-
 	"github.com/buaazp/fasthttprouter"
+	"github.com/go-gas/gas/model"
+	"github.com/mailru/easyjson"
 	"github.com/valyala/fasthttp"
-	//"fmt"
+	"html/template"
 )
+
+// D is JSON Data Type
+type JSON map[string]interface{}
 
 type Context struct {
 	//context.Context
@@ -161,7 +160,7 @@ func (ctx *Context) JSON(status int, data interface{}) error {
 	if err != nil {
 		return err
 	}
-	// fmt.Fprint(ctx.Writer, data)
+
 	_, errr := ctx.Write(jsonstr)
 
 	return errr
