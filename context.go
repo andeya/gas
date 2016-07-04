@@ -5,7 +5,6 @@ import (
 	"errors"
 	"github.com/buaazp/fasthttprouter"
 	"github.com/go-gas/gas/model"
-	"github.com/mailru/easyjson"
 	"github.com/valyala/fasthttp"
 	"html/template"
 )
