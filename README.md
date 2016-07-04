@@ -1,23 +1,23 @@
 # Gas
 
-<img src="https://raw.githubusercontent.com/go-gas/gas/master/logo.jpg" alt="go-gas" width="200px" />
+<img src="https://raw.githubusercontent.com/go-gas/gas/master/logo.png" alt="go-gas" width="300px" />
 
 [![Build Status](https://travis-ci.org/go-gas/gas.svg?branch=master)](https://travis-ci.org/go-gas/gas) [![codecov](https://codecov.io/gh/go-gas/gas/branch/master/graph/badge.svg)](https://codecov.io/gh/go-gas/gas) [![Go Report Card](https://goreportcard.com/badge/github.com/go-gas/gas)](https://goreportcard.com/report/github.com/go-gas/gas)
 [![Join the chat at https://gitter.im/go-gas/gas](https://badges.gitter.im/go-gas/gas.svg)](https://gitter.im/go-gas/gas?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Gas is a high performance, full-featured(in the future), easy to use, and quick develop backend web apllication framework in Golang.
- 
+
 # Features
 
 - Router (based on [fasthttprouter](https://github.com/buaazp/fasthttprouter) package)
-- Easy to use golang template engine. (will include another template engine) 
+- Easy to use golang template engine. (will include another template engine)
 - Context (easy to manage the request and response)
 - Middleware (Global and specify routing path middleware support)
 - Log package
 - Read config from a yaml file [gas-config](https://github.com/go-gas/Config)
 - Database model (developing)
 
-other features are highly active development 
+other features are highly active development
 
 ##### and you can see example at [gas-example](https://github.com/go-gas/example).
 
@@ -135,7 +135,7 @@ func LogMiddleware(next gas.GasHandler) gas.GasHandler {
 }
 ```
 
-or 
+or
 
 ```go
 func MyMiddleware2 (ctx *gas.Context) error {
