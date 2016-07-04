@@ -15,11 +15,11 @@ type (
 	Router struct {
 		*fasthttprouter.Router
 		g           *Engine
-		middlewares []MiddlewareFunc
+		middlewares []GasMiddlewareFunc
 	}
 
 	// MiddlewareFunc middlewarefunc define
-	MiddlewareFunc func(GasHandler) GasHandler
+	GasMiddlewareFunc func(GasHandler) GasHandler
 
 	// CHandler is a function type for rout handler
 	GasHandler func(*Context) error
@@ -165,13 +165,13 @@ func (r *Router) SetPanicHandler(ph PanicHandler) {
 func (r *Router) Use(m interface{}) {
 	m = wrapMiddleware(m)
 
-	r.middlewares = append(r.middlewares, m.(MiddlewareFunc))
+	r.middlewares = append(r.middlewares, m.(GasMiddlewareFunc))
 }
 
 // wrapMiddleware wraps middleware.
-func wrapMiddleware(m interface{}) MiddlewareFunc {
+func wrapMiddleware(m interface{}) GasMiddlewareFunc {
 	switch m := m.(type) {
-	case MiddlewareFunc:
+	case GasMiddlewareFunc:
 		return m
 	case func(GasHandler) GasHandler:
 		return m
@@ -185,7 +185,7 @@ func wrapMiddleware(m interface{}) MiddlewareFunc {
 	}
 }
 
-func wrapHandlerFuncToMiddlewareFunc(m GasHandler) MiddlewareFunc {
+func wrapHandlerFuncToMiddlewareFunc(m GasHandler) GasMiddlewareFunc {
 	return func(h GasHandler) GasHandler {
 		return func(c *Context) error {
 			if err := m(c); err != nil {
@@ -214,43 +214,58 @@ func (r *Router) setRoute(method, path string, ch GasHandler) {
 //	}
 //}
 
-func (r *Router) set(method, path string, ch GasHandler) {
+func (r *Router) chainMiddleware(h GasHandler, middlewares ...interface{}) GasHandler {
+	var res GasHandler
+	res = h
+	for i := len(middlewares) - 1; i >= 0; i-- {
+		m := wrapMiddleware(middlewares[i])
+		res = m(res)
+	}
+
+	return res
+}
+
+func (r *Router) set(method, path string, ch GasHandler, middlewares ...interface{}) {
+	if len(middlewares) != 0 {
+		ch = r.chainMiddleware(ch, middlewares...)
+	}
+
 	r.setRoute(method, path, ch)
 }
 
 // Get REST funcs
-func (r *Router) Get(path string, ch GasHandler) {
-	r.set("GET", path, ch)
+func (r *Router) Get(path string, ch GasHandler, middlewares ...interface{}) {
+	r.set("GET", path, ch, middlewares...)
 }
 
 // Post REST funcs
-func (r *Router) Post(path string, ch GasHandler) {
-	r.set("POST", path, ch)
+func (r *Router) Post(path string, ch GasHandler, middlewares ...interface{}) {
+	r.set("POST", path, ch, middlewares...)
 }
 
 // Delete REST funcs
-func (r *Router) Delete(path string, ch GasHandler) {
-	r.set("DELETE", path, ch)
+func (r *Router) Delete(path string, ch GasHandler, middlewares ...interface{}) {
+	r.set("DELETE", path, ch, middlewares...)
 }
 
 // Head REST funcs
-func (r *Router) Head(path string, ch GasHandler) {
-	r.set("HEAD", path, ch)
+func (r *Router) Head(path string, ch GasHandler, middlewares ...interface{}) {
+	r.set("HEAD", path, ch, middlewares...)
 }
 
 // Options REST funcs
-func (r *Router) Options(path string, ch GasHandler) {
-	r.set("OPTIONS", path, ch)
+func (r *Router) Options(path string, ch GasHandler, middlewares ...interface{}) {
+	r.set("OPTIONS", path, ch, middlewares...)
 }
 
 // Put REST funcs
-func (r *Router) Put(path string, ch GasHandler) {
-	r.set("PUT", path, ch)
+func (r *Router) Put(path string, ch GasHandler, middlewares ...interface{}) {
+	r.set("PUT", path, ch, middlewares...)
 }
 
 // Patch REST funcs
-func (r *Router) Patch(path string, ch GasHandler) {
-	r.set("PATCH", path, ch)
+func (r *Router) Patch(path string, ch GasHandler, middlewares ...interface{}) {
+	r.set("PATCH", path, ch, middlewares...)
 }
 
 func (r *Router) StaticPath(dir string) {

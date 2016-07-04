@@ -140,3 +140,55 @@ func TestRouter_REST(t *testing.T) {
 	ee2.Status(http.StatusOK)
 	ee2.Body().Equal("Post TestPOSTED")
 }
+
+func TestRouter_SetMiddlewareFunc(t *testing.T) {
+	// new gas
+	g := New("testfiles/config_test.yaml")
+
+	g.Router.Get("/test", func(c *Context) error {
+		return c.STRING(http.StatusOK, "TEST")
+	}, testMiddleware1)
+
+	e := newHttpExpect(t, g.Router.Handler)
+	e.GET("/test").WithFormField("Test", "Go").
+		Expect().Status(http.StatusOK).Body().Equal("TEST")
+
+	e.GET("/test").WithFormField("Test", "DontGo").
+		Expect().Status(http.StatusForbidden).Body().Equal("ERROR")
+}
+
+func testMiddleware1(next GasHandler) GasHandler {
+	return func(ctx *Context) error {
+		if ctx.GetParam("Test") == "Go" {
+			return next(ctx)
+		} else {
+			return ctx.STRING(http.StatusForbidden, "ERROR")
+		}
+	}
+}
+
+func testMiddleware2(ctx *Context) error {
+	if ctx.GetParam("Test") == "Go" {
+		return ctx.STRING(http.StatusOK, "OK")
+	} else {
+		ctx.Request.PostArgs().Add("FromMiddleware", "NO")
+		return ctx.STRING(http.StatusForbidden, "ERROR-")
+	}
+}
+
+func TestRouter_SetGasHandlerAsMiddleware(t *testing.T) {
+	// new gas
+	g := New("testfiles/config_test.yaml")
+
+	g.Router.Get("/test", func(c *Context) error {
+		_, err := c.WriteString(c.GetParam("FromMiddleware"))
+		return err
+	}, testMiddleware2)
+
+	e := newHttpExpect(t, g.Router.Handler)
+	e.GET("/test").WithFormField("Test", "Go").
+		Expect().Status(http.StatusOK).Body().Equal("OK")
+
+	e.GET("/test").WithFormField("Test", "DontGo").
+		Expect().Status(http.StatusForbidden).Body().Equal("ERROR-NO")
+}

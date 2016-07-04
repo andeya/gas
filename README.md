@@ -103,14 +103,26 @@ func RegistRout(r *gas.Router)  {
 
 ### Register middleware
 
+##### Global middleware
+If you want a middleware to be run during every request to your application,
+you can use Router.Use function to register your middleware.
+
 ```go
 g.Router.Use(middleware.LogMiddleware)
 ```
 
-And you can write your own middleware function
+##### Assigning middleware to Route
+If you want to assign middleware to specific routes,
+you can set your middlewares after set route function like:
 
 ```go
-func LogMiddleware(next gas.CHandler) gas.CHandler {
+r.Get("/", controllers.IndexPage, myMiddleware1, myMiddleware2)
+```
+
+##### And you can write your own middleware function
+
+```go
+func LogMiddleware(next gas.GasHandler) gas.GasHandler {
     return func (c *gas.Context) error  {
 
        // do something before next handler
@@ -124,11 +136,27 @@ func LogMiddleware(next gas.CHandler) gas.CHandler {
 }
 ```
 
-### And done
+or 
 
+```go
+func MyMiddleware2 (ctx *gas.Context) error {
+  // do something
+}
+```
+
+### The final step
+
+Run and listen your web application
 ```go
 g.Run()
 ```
+
+or you can give listen address
+```go
+g.Run(":8080")
+```
+
+but I recommend setting listen address in config files.
 
 # Benchmark
 
