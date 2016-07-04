@@ -5,22 +5,21 @@
 [![Build Status](https://travis-ci.org/go-gas/gas.svg?branch=master)](https://travis-ci.org/go-gas/gas) [![codecov](https://codecov.io/gh/go-gas/gas/branch/master/graph/badge.svg)](https://codecov.io/gh/go-gas/gas) [![Go Report Card](https://goreportcard.com/badge/github.com/go-gas/gas)](https://goreportcard.com/report/github.com/go-gas/gas)
 [![Join the chat at https://gitter.im/go-gas/gas](https://badges.gitter.im/go-gas/gas.svg)](https://gitter.im/go-gas/gas?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Gas is a Web framework written in Go. And this is not a total complete project.
-
-I just did a minimum workable architechture.
-
-The workable feature is:
+Gas is a high performance, full-featured(in the future), easy to use, and quick develop backend web apllication framework in Golang.
+ 
+# Features
 
 - Router (based on [fasthttprouter](https://github.com/buaazp/fasthttprouter) package)
-- Context (It can easy to render view and print json string)
-- Middleware
-- Logger middleware
+- Easy to use golang template engine. (will include another template engine) 
+- Context (easy to manage the request and response)
+- Middleware (Global and specify routing path middleware support)
 - Log package
-- Read config from a yaml file
+- Read config from a yaml file [gas-config](https://github.com/go-gas/Config)
+- Database model (developing)
 
-And Model is not complete yet. Just finished MySQL sql Builder
+other features are highly active development 
 
-##### all feature you can see in [gas-example](https://github.com/go-gas/example).
+##### and you can see example at [gas-example](https://github.com/go-gas/example).
 
 # Install
 
@@ -191,14 +190,6 @@ Using [go-web-framework-benchmark](https://github.com/smallnest/go-web-framework
 #### Concurrency-pipeline
 
 <img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/concurrency-pipeline.png" alt="go-gas-concurrency-pipeline" />
-
-## Benchmark conclusion
-
-[Iris](https://github.com/kataras/iris) is still the fastest web framework.
-
-But gas is very new, so in the future
-
-I wish this framework might not be a fastest but it will very fast and full featured.
 
 ### Roadmap
 - [ ] Models
