@@ -18,7 +18,7 @@ test -f coverage.txt && rm -rf coverage.txt
 echo "mode: ${coverage_mode}" > coverage.txt
 
 for d in ./model/MySQL/... ./validator/... .; do
-  go test -v -cover -coverprofile=profile.out -covermode=${coverage_mode} $d
+  go test -v -race -cover -coverprofile=profile.out -covermode=${coverage_mode} $d
   if [ -f profile.out ]; then
     sed '1d' profile.out >> coverage.txt
     rm profile.out

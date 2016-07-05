@@ -5,7 +5,7 @@ fmt:
 	@echo $(TARGETS_NOVENDOR) | xargs go fmt
 
 test:
-	go test -v ./
+	go test -v -race ./
 
 coverage:
 	sh test.sh count
