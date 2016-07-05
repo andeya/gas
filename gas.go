@@ -116,7 +116,7 @@ var defaultConfig = map[interface{}]interface{}{
 type (
 	Engine struct {
 		Router *Router
-		Config *Config.Config
+		Config *config.Engine
 		Model  *gasModel
 		pool   sync.Pool
 		Logger *logger.Logger
@@ -150,7 +150,7 @@ func New(configPath ...string) *Engine {
 	}
 
 	// load config
-	g.Config = Config.New(defaultConfig)
+	g.Config = config.New(defaultConfig)
 	if len(configPath) != 0 {
 		for _, path := range configPath {
 			g.Config.Load(path)

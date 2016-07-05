@@ -12,7 +12,7 @@ type MySQLModel struct {
 	b *MySQLBuilder.MySQLBuilder
 }
 
-func New(cfg *Config.Config) model.ModelInterface {
+func New(cfg *config.Engine) model.ModelInterface {
 	b := MySQLBuilder.New(cfg)
 	m := &MySQLModel{}
 	m.SetBuilder(b)

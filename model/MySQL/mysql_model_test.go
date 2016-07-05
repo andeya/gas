@@ -60,7 +60,7 @@ func TestMain(m *testing.M) {
 
 	//var md ModelInterface
 
-	cfg := Config.New(map[interface{}]interface{}{"Db": testConfig})
+	cfg := config.New(map[interface{}]interface{}{"Db": testConfig})
 	testM = New(cfg).(*MySQLModel)
 	// switch strings.ToLower(c.Db.SQLDriver) {
 	//     case "mysql":
