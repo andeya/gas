@@ -126,7 +126,7 @@ func (ctx *Context) HTML(code int, html string) error {
 
 	ctx.SetContentType(TextHTMLCharsetUTF8)
 	ctx.SetStatusCode(code)           // .RespWriter.WriteHeader(code)
-	_, err := ctx.Write([]byte(html)) //_, err := ctx.RespWriter.Write([]byte(html))
+	_, err := ctx.WriteString(html) //_, err := ctx.RespWriter.Write([]byte(html))
 
 	return err
 }
@@ -144,7 +144,7 @@ func (ctx *Context) STRING(status int, data string) error {
 		ctx.SetContentType(ApplicationForm)
 	}
 	ctx.SetStatusCode(status)
-	_, err := ctx.Write([]byte(data))
+	_, err := ctx.WriteString(data)
 	return err
 }
 

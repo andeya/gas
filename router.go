@@ -199,7 +199,8 @@ func wrapHandlerFuncToMiddlewareFunc(m GasHandler) GasMiddlewareFunc {
 
 func (r *Router) setRoute(method, path string, ch GasHandler) {
 	//r.hr.Handle(method, path, func(rw http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	r.Handle(method, path, r.wrapGasHandlerToFasthttpRouterHandler(ch))
+	h := r.wrapGasHandlerToFasthttpRouterHandler(ch)
+	r.Handle(method, path, h)
 }
 
 //func checkHandler(h interface{}) GasHandler {

@@ -69,7 +69,11 @@ func (l *Logger) Error(log string) {
 	l.doLog(ERROR, log)
 }
 
-func (l *Logger) doLog(level int, log string) error {
+func (l *Logger) doLog(level int, log string) {
+		go l.writeLog(level, log)
+}
+
+func (l *Logger) writeLog(level int, log string) error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
