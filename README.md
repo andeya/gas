@@ -65,13 +65,34 @@ import (
 ### New
 
 ```go
-g := gas.New() // will load "config/default.yaml"
+g := gas.New() 
+g.LoadConfig("your/config/path")
 ```
 
-or
+If you don't want to load any config,
+you might be know that gas have a default config with
 
 ```go
-g := gas.New("config/path")
+var defaultConfig = map[interface{}]interface{}{
+	"Mode":       "DEV",
+	"ListenAddr": "localhost",
+	"ListenPort": "8080",
+	"PubDir":     "public",
+	"Db": map[interface{}]interface{}{
+		"SqlDriver": "MySQL",
+		"Hostname":  "localhost",
+		"Port":      "3306",
+		"Username":  "root",
+		"Password":  "",
+		"Charset":   "utf8",
+	},
+}
+```
+
+or you can give config path when new gas app
+
+```go
+g := gas.New("config/path1", "config/path2")
 ```
 
 ### Register Routes

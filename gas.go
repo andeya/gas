@@ -144,8 +144,6 @@ func New(configPath ...string) *Engine {
 
 	// init pool
 	g.pool.New = func() interface{} {
-		// c := &Context{}
-		// c.Writer = &c.writercache
 		c := createContext(nil, g)
 
 		return c
@@ -153,17 +151,10 @@ func New(configPath ...string) *Engine {
 
 	// load config
 	g.Config = Config.New(defaultConfig)
-	if len(configPath) == 0 {
-		configPath = []string{"config/default.yaml"}
-	}
-
-	//// Only load first config (maybe load multi config next version)
-	//err := g.Config.loadConfig(configPath[0])
-	//if err != nil {
-	//	panic(err.Error())
-	//}
-	for _, path := range configPath {
-		g.Config.Load(path)
+	if len(configPath) != 0 {
+		for _, path := range configPath {
+			g.Config.Load(path)
+		}
 	}
 
 	// set router
@@ -177,20 +168,6 @@ func New(configPath ...string) *Engine {
 
 	// set static file path
 	g.Router.StaticPath(g.Config.GetString("PubDir"))
-	// fileServer := http.FileServer(http.Dir(g.Config.PubDir))
-	// g.Router.Get("/"+ g.Config.PubDir +"/*filepath", func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	//     w.Header().Set("Vary", "Accept-Encoding")
-	//     w.Header().Set("Cache-Control", "public, max-age=7776000")
-	//     r.URL.Path = p.ByName("filepath")
-	//     fileServer.ServeHTTP(w, r)
-	// })
-
-	// init model
-	// g.Model = &gasModel{}
-
-	// if Config.Db.SQLDriver != "" && Config.Db.Username != "" && Config.Db.Dbname != "" {
-	//     Model.Conn(Config.Db.Username, Config.Db.Password, Config.Db.Dbname)
-	// }
 
 	// add Log middleware
 	// g.Router.Use(middleware.LogMiddleware)
