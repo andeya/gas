@@ -15,7 +15,7 @@ Gas aims to be a high performance, full-featured, easy to use, and quick develop
 - Middleware (Global and specify routing path middleware support)
 - Log package
 - Read config from a yaml file [gas-config](https://github.com/go-gas/Config)
-- Database model (developing)
+- Database model (developing, based on [go-gas/SQLBuilder](https://github.com/go-gas/SQLBuilder))
 
 other features are highly active development
 
