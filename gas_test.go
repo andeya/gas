@@ -83,3 +83,26 @@ func TestGas_NewModel(t *testing.T) {
 
 	as.IsType(&MySQLModel.MySQLModel{}, m)
 }
+
+func BenchmarkGas(b *testing.B) {
+	b.ReportAllocs()
+
+	// new gas
+	g := New("testfiles/config_test.yaml")
+
+	// set route
+	g.Router.Get("/", indexPage)
+
+	req := fasthttp.Request{}
+	req.SetRequestURI("/")
+	req.Header.SetMethod("GET")
+
+
+	for i := 0; i < b.N; i++ {
+		ctx := fasthttp.RequestCtx{
+			Request: req,
+		}
+
+		g.Router.Handler(&ctx)
+	}
+}
