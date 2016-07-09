@@ -31,8 +31,6 @@ func newHttpExpect(t *testing.T, h fasthttp.RequestHandler) *httpexpect.Expect {
 }
 
 func Testgas(t *testing.T) {
-	//assert := assert.New(t)
-
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
@@ -40,36 +38,12 @@ func Testgas(t *testing.T) {
 	g.Router.Get("/", indexPage)
 
 	e := newHttpExpect(t, g.Router.Handler)
-	e.GET("/").Expect().Status(http.StatusOK).Body().Equal(indexString)
-
-	// create request
-	//req, _ := http.NewRequest("GET", "/", nil)
-	//rec := httptest.NewRecorder()
-	//g.Router.ServeHTTP(rec, req)
-	//
-	//assert.Equal(http.StatusOK, rec.Code)
-	//assert.Equal(indexString, rec.Body.String())
-
+	e.GET("/").
+		Expect().
+		Status(http.StatusOK).
+		Body().Equal(indexString)
 }
 
-//func Testgas_Static(t *testing.T) {
-//	assert := assert.New(t)
-//
-//	// new gas
-//	g := New("testfiles/config_test.yaml")
-//
-//	// set route
-//	//g.Router.Get("/", indexPage)
-//
-//	// create request
-//	req, _ := http.NewRequest("GET", "/testfiles/static.txt", nil)
-//	rec := httptest.NewRecorder()
-//	g.Router.ServeHTTP(rec, req)
-//
-//	assert.Equal(http.StatusOK, rec.Code)
-//	assert.Equal(testStaticString, rec.Body.String())
-//}
-//
 func indexPage(ctx *Context) error {
 	return ctx.STRING(http.StatusOK, indexString)
 }
