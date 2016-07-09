@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"testing"
 	"time"
+	"crypto/tls"
 )
 
 var (
@@ -32,13 +33,19 @@ func newHttpExpect(t *testing.T, h fasthttp.RequestHandler) *httpexpect.Expect {
 }
 
 func testRequest(t *testing.T, url string) {
-	resp, err := http.Get(url)
-	defer resp.Body.Close()
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	resp, err := client.Get(url)
+
 	assert.NoError(t, err)
 
-	_, ioerr := ioutil.ReadAll(resp.Body)
+	b, ioerr := ioutil.ReadAll(resp.Body)
 	assert.NoError(t, ioerr)
 	assert.Equal(t, "200 OK", resp.Status, "should get a 200")
+	assert.Equal(t, indexString, string(b))
 }
 
 func indexPage(ctx *Context) error {
@@ -81,7 +88,12 @@ func TestRunTLS(t *testing.T) {
 	// set route
 	g.Router.Get("/", indexPage)
 
-	assert.NoError(t, g.RunTLS(":8081", "certificate/localhost.cert", "certificate/localhost.key"))
+	go func() {
+		assert.NoError(t, g.RunTLS("localhost:8081", "certificate/localhost.cert", "certificate/localhost.key"))
+	}()
+	time.Sleep(5 * time.Millisecond)
+
+	testRequest(t, "https://localhost:8081")
 }
 
 func TestGas_NewModel(t *testing.T) {
