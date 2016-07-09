@@ -81,14 +81,7 @@ func TestRunTLS(t *testing.T) {
 	// set route
 	g.Router.Get("/", indexPage)
 
-	go func() {
-		assert.NoError(t, g.RunTLS(":8081", "certificate/localhost.cert", "certificate/localhost.key"))
-	}()
-	// have to wait for the goroutine to start and run the server
-	// otherwise the main thread will complete
-	time.Sleep(5 * time.Millisecond)
-
-	testRequest(t, "https://localhost:8081")
+	assert.NoError(t, g.RunTLS(":8081", "certificate/localhost.cert", "certificate/localhost.key"))
 }
 
 func TestGas_NewModel(t *testing.T) {

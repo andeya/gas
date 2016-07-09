@@ -65,7 +65,7 @@ import (
 ### New
 
 ```go
-g := gas.New() 
+g := gas.New()
 g.LoadConfig("your/config/path")
 ```
 
@@ -166,14 +166,22 @@ func MyMiddleware2 (ctx *gas.Context) error {
 
 ### The final step
 
-Run and listen your web application
+Run and listen your web application with default `8080` port.
+
 ```go
 g.Run()
 ```
 
-or you can give listen address
+or you can give listen address and another port.
+
 ```go
-g.Run(":8080")
+g.Run(":8089")
+```
+
+or serving HTTPS (secure) requests.
+
+```go
+g.RunTLS(":8080", "CertFile", "CertKey")
 ```
 
 but I recommend setting listen address in config files.
@@ -230,7 +238,7 @@ Using [go-web-framework-benchmark](https://github.com/smallnest/go-web-framework
  - [ ] Redis
  - [ ] Memcache
 - [ ] i18n
-- [ ] HTTPS
+- [x] HTTPS
 - [ ] Command line tools
 - [ ] Form handler (maybe next version)
 - [ ] Security check features(csrf, xss filter...etc)
