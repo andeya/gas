@@ -1,6 +1,7 @@
 package gas
 
 import (
+	"crypto/tls"
 	"github.com/gavv/httpexpect"
 	"github.com/go-gas/gas/model/MySQL"
 	"github.com/stretchr/testify/assert"
@@ -9,7 +10,6 @@ import (
 	"net/http"
 	"testing"
 	"time"
-	"crypto/tls"
 )
 
 var (
@@ -39,6 +39,7 @@ func testRequest(t *testing.T, url string) {
 	client := &http.Client{Transport: tr}
 
 	resp, err := client.Get(url)
+	defer resp.Body.Close()
 
 	assert.NoError(t, err)
 
