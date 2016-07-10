@@ -1,4 +1,4 @@
-// gas is a web framework.
+// Package gas is a web framework.
 //
 // Example
 //
@@ -103,6 +103,8 @@ var defaultConfig = map[interface{}]interface{}{
 	"ListenAddr": "localhost",
 	"ListenPort": "8080",
 	"PubDir":     "public",
+	"CrtFile":    "",
+	"KeyFile":    "",
 	"Db": map[interface{}]interface{}{
 		"SqlDriver": "MySQL",
 		"Hostname":  "localhost",
@@ -198,8 +200,8 @@ func (g *Engine) LoadConfig(configPath string) {
 	g.Config.Load(configPath)
 }
 
-// Run framework
-func (g *Engine) Run(addr ...string) {
+// Run attaches the router to a http.Server and starts listening and serving HTTP requests.
+func (g *Engine) Run(addr ...string) (err error) {
 	listenAddr := ""
 	if len(addr) == 0 {
 		listenAddr = g.Config.GetString("ListenAddr") + ":" + g.Config.GetString("ListenPort")
@@ -207,38 +209,30 @@ func (g *Engine) Run(addr ...string) {
 		listenAddr = addr[0]
 	}
 	fmt.Println("Server is Listen on: " + listenAddr)
-	if err := fasthttp.ListenAndServe(listenAddr, g.Router.Handler); err != nil {
-		panic(err)
-	}
+
+	err = fasthttp.ListenAndServe(listenAddr, g.Router.Handler)
+	return
 }
 
-// New database connection according to config settings
-//func (g *Engine) NewDb() model.SlimDbInterface {
-//	c := g.Config
-//
-//	var d model.SlimDbInterface
-//
-//	switch strings.ToLower(c.Db.SQLDriver) {
-//	case "mysql":
-//		d = new(model.MysqlDb)
-//	default:
-//		panic("Unknow Database Driver: " + g.Config.Db.SQLDriver)
-//
-//	}
-//
-//	d.ConnectWithConfig(g.Config.Db)
-//
-//	return d
-//
-//	// err := m.Connect(c.Db.Protocal, c.Db.Hostname, c.Db.Port, c.Db.Username, c.Db.Password, c.Db.Dbname, "charset=" + c.Db.Charset)
-//	// if err != nil {
-//	//     panic("Connection error: " + err.Error())
-//	// }
-//
-//	// m.TestConn()
-//
-//	// return m
-//}
+// RunTLS attaches the router to a http.Server and starts listening and serving HTTPS (secure) requests.
+func (g *Engine) RunTLS(addr ...string) (err error) {
+	var certFile, keyFile, listenAddr string
+
+	if len(addr) == 0 {
+		listenAddr = g.Config.GetString("ListenAddr") + ":" + g.Config.GetString("ListenPort")
+		certFile = g.Config.GetString("CertFile")
+		keyFile = g.Config.GetString("KeyFile")
+	} else {
+		listenAddr = addr[0]
+		certFile = addr[1]
+		keyFile = addr[2]
+	}
+
+	fmt.Println("Server is Listen on: " + listenAddr)
+
+	err = fasthttp.ListenAndServeTLS(listenAddr, certFile, keyFile, g.Router.Handler)
+	return
+}
 
 // New model according to config settings
 func (g *Engine) NewModel() model.ModelInterface {

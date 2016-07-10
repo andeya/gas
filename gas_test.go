@@ -5,13 +5,15 @@ import (
 	"github.com/go-gas/gas/model/MySQL"
 	"github.com/stretchr/testify/assert"
 	"github.com/valyala/fasthttp"
+	"io/ioutil"
 	"net/http"
 	"testing"
+	"time"
+	"crypto/tls"
 )
 
 var (
-	indexString      = "indexpage"
-	testStaticString = "This is a static file"
+	indexString = "indexpage"
 )
 
 func newHttpExpect(t *testing.T, h fasthttp.RequestHandler) *httpexpect.Expect {
@@ -30,9 +32,27 @@ func newHttpExpect(t *testing.T, h fasthttp.RequestHandler) *httpexpect.Expect {
 	return e
 }
 
-func Testgas(t *testing.T) {
-	//assert := assert.New(t)
+func testRequest(t *testing.T, url string) {
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
 
+	resp, err := client.Get(url)
+
+	assert.NoError(t, err)
+
+	b, ioerr := ioutil.ReadAll(resp.Body)
+	assert.NoError(t, ioerr)
+	assert.Equal(t, "200 OK", resp.Status, "should get a 200")
+	assert.Equal(t, indexString, string(b))
+}
+
+func indexPage(ctx *Context) error {
+	return ctx.STRING(http.StatusOK, indexString)
+}
+
+func TestGas(t *testing.T) {
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
@@ -40,38 +60,40 @@ func Testgas(t *testing.T) {
 	g.Router.Get("/", indexPage)
 
 	e := newHttpExpect(t, g.Router.Handler)
-	e.GET("/").Expect().Status(http.StatusOK).Body().Equal(indexString)
-
-	// create request
-	//req, _ := http.NewRequest("GET", "/", nil)
-	//rec := httptest.NewRecorder()
-	//g.Router.ServeHTTP(rec, req)
-	//
-	//assert.Equal(http.StatusOK, rec.Code)
-	//assert.Equal(indexString, rec.Body.String())
-
+	e.GET("/").
+		Expect().
+		Status(http.StatusOK).
+		Body().Equal(indexString)
 }
 
-//func Testgas_Static(t *testing.T) {
-//	assert := assert.New(t)
-//
-//	// new gas
-//	g := New("testfiles/config_test.yaml")
-//
-//	// set route
-//	//g.Router.Get("/", indexPage)
-//
-//	// create request
-//	req, _ := http.NewRequest("GET", "/testfiles/static.txt", nil)
-//	rec := httptest.NewRecorder()
-//	g.Router.ServeHTTP(rec, req)
-//
-//	assert.Equal(http.StatusOK, rec.Code)
-//	assert.Equal(testStaticString, rec.Body.String())
-//}
-//
-func indexPage(ctx *Context) error {
-	return ctx.STRING(http.StatusOK, indexString)
+func TestRun(t *testing.T) {
+	g := New()
+
+	// set route
+	g.Router.Get("/", indexPage)
+
+	go func() {
+		assert.NoError(t, g.Run())
+	}()
+	// have to wait for the goroutine to start and run the server
+	// otherwise the main thread will complete
+	time.Sleep(5 * time.Millisecond)
+
+	testRequest(t, "http://localhost:8080")
+}
+
+func TestRunTLS(t *testing.T) {
+	g := New()
+
+	// set route
+	g.Router.Get("/", indexPage)
+
+	go func() {
+		assert.NoError(t, g.RunTLS("localhost:8081", "certificate/localhost.cert", "certificate/localhost.key"))
+	}()
+	time.Sleep(5 * time.Millisecond)
+
+	testRequest(t, "https://localhost:8081")
 }
 
 func TestGas_NewModel(t *testing.T) {
@@ -96,7 +118,6 @@ func BenchmarkGas(b *testing.B) {
 	req := fasthttp.Request{}
 	req.SetRequestURI("/")
 	req.Header.SetMethod("GET")
-
 
 	for i := 0; i < b.N; i++ {
 		ctx := fasthttp.RequestCtx{
