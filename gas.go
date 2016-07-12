@@ -113,6 +113,18 @@ var defaultConfig = map[interface{}]interface{}{
 		"Password":  "",
 		"Charset":   "utf8",
 	},
+	"session": map[interface{}]interface{} {
+		"CookieName": "gas-session",
+		"SessionIDLength": 10,
+		"CookieLifeTime":  0, // cookie expire time
+		"ExpireTime":      3600, // time for destroy from GC
+		"GCTime":          60, // GC frequency
+		"Domain":          "",
+	},
+	"sessionProvider": "memory",
+	"sessionProviderConfig": map[interface{}]interface{} {
+
+	},
 }
 
 type (
