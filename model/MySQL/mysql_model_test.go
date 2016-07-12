@@ -1,7 +1,7 @@
 package MySQLModel
 
 import (
-	"github.com/go-gas/Config"
+	"github.com/go-gas/config"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"

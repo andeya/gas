@@ -88,7 +88,7 @@ package gas
 
 import (
 	"fmt"
-	"github.com/go-gas/Config"
+	"github.com/go-gas/config"
 	"github.com/go-gas/gas/logger"
 	"github.com/go-gas/gas/model"
 	"github.com/go-gas/gas/model/MySQL"

@@ -125,7 +125,7 @@ func (ctx *Context) Render(data interface{}, tplPath ...string) error {
 func (ctx *Context) HTML(code int, html string) error {
 
 	ctx.SetContentType(TextHTMLCharsetUTF8)
-	ctx.SetStatusCode(code)           // .RespWriter.WriteHeader(code)
+	ctx.SetStatusCode(code)         // .RespWriter.WriteHeader(code)
 	_, err := ctx.WriteString(html) //_, err := ctx.RespWriter.Write([]byte(html))
 
 	return err

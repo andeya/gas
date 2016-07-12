@@ -1,8 +1,8 @@
 package MySQLModel
 
 import (
-	"github.com/go-gas/Config"
 	"github.com/go-gas/SQLBuilder/MySQLBuilder"
+	"github.com/go-gas/config"
 	"github.com/go-gas/gas/model"
 )
 

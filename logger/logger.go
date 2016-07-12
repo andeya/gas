@@ -70,7 +70,7 @@ func (l *Logger) Error(log string) {
 }
 
 func (l *Logger) doLog(level int, log string) {
-		go l.writeLog(level, log)
+	go l.writeLog(level, log)
 }
 
 func (l *Logger) writeLog(level int, log string) error {
