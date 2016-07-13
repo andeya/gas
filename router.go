@@ -88,6 +88,10 @@ func (r *Router) wrapGasHandlerToFasthttpRouterHandler(h GasHandler) fasthttprou
 			defer gasCtx.CloseDB()
 		}
 
+		if gasCtx.isUseSession {
+			defer gasCtx.SessionEnd()
+		}
+
 		// ctx.handlerFunc = ch
 		// ctx.Next()
 

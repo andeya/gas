@@ -7,6 +7,7 @@ import (
 	"github.com/go-gas/gas/model"
 	"github.com/valyala/fasthttp"
 	"html/template"
+	"github.com/go-gas/sessions"
 )
 
 // D is JSON Data Type
@@ -27,6 +28,11 @@ type Context struct {
 	// DB
 	isUseDB bool
 	mobj    model.ModelInterface
+
+	// session
+	isUseSession bool
+	sessionManager *sessions.SessionManager
+	cookieHandler sessions.HTTPCookieHandlerInterface
 }
 
 // create context
@@ -54,6 +60,9 @@ func (ctx *Context) reset(fctx *fasthttp.RequestCtx, ps *fasthttprouter.Params, 
 
 	ctx.mobj = nil
 	ctx.isUseDB = false
+
+	ctx.isUseSession = false
+	ctx.cookieHandler = nil
 }
 
 // func (ctx *Context) Next()  {
@@ -186,4 +195,44 @@ func (ctx *Context) GetModel() model.ModelInterface {
 // Close db connection
 func (ctx *Context) CloseDB() error {
 	return ctx.mobj.Builder().GetDB().Close()
+}
+
+
+// ==== session management ====
+func (ctx *Context) SessionStart() sessions.SessionInterface {
+	// read session provider from config
+	if ctx.sessionManager == nil {
+		sc := &sessions.SessionConfig{}
+		ctx.sessionManager = sessions.New(ctx.gas.Config.GetString("sessionProvider"), ctx.gas.Config.GetStruct("session", sc).(*sessions.SessionConfig))
+	}
+
+	cookieHandler := sessions.NewFasthttpCookieHandler(ctx.RequestCtx)
+
+	s, _ := ctx.sessionManager.SessionStart(cookieHandler)
+
+	ctx.isUseSession = true
+	ctx.cookieHandler = cookieHandler
+
+	return s
+}
+
+func (ctx *Context) SessionDestroy() {
+	if ctx.sessionManager == nil {
+		ctx.SessionStart()
+	}
+
+	if ctx.cookieHandler == nil {
+		cookieHandler := sessions.NewFasthttpCookieHandler(ctx.RequestCtx)
+
+		ctx.isUseSession = true
+		ctx.cookieHandler = cookieHandler
+	}
+
+	ctx.sessionManager.Destroy(ctx.cookieHandler)
+}
+
+func (ctx *Context) SessionEnd() {
+	if ctx.cookieHandler != nil {
+		sessions.RecycleFasthttpCookieHandler(ctx.cookieHandler.(*sessions.FasthttpCookieHandler))
+	}
 }
