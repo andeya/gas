@@ -14,8 +14,8 @@ before_install:
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('123456') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
   - mysql -e "create database IF NOT EXISTS test;" -uroot -p123456
   - mysql -uroot -p123456 test < testfiles/test.sql
-  - sudo add-apt-repository ppa:masterminds/glide -y && sudo apt-get update
-  - sudo apt-get install -y --force-yes glide
+  - test -d $GOPATH/bin || mkdir -p $GOPATH/bin
+  - curl https://glide.sh/get | sh
 
 install:
   - go get -t -v ./...
