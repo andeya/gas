@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"testing"
+	_ "github.com/go-gas/sessions/memory"
+	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -148,4 +150,62 @@ func TestJSONResponse(t *testing.T) {
 		ContentType("application/json", "utf-8").
 		Body().Equal(string(js))
 
+}
+
+func TestContext_SessionStart(t *testing.T) {
+	// new gas
+	g := New("testfiles/config_test.yaml")
+
+
+	// set route
+	g.Router.Get("/", func(ctx *Context) error {
+		ctx.SessionStart()
+
+		assert.NotNil(t, ctx.sessionManager)
+
+		return ctx.STRING(http.StatusOK, "session start")
+	})
+
+	// create fasthttp.RequestHandler
+	handler := g.Router.Handler
+
+	// create httpexpect instance that will call fasthtpp.RequestHandler directly
+	e := newHttpExpect(t, handler)
+
+	// run tests
+	e.GET("/").
+	Expect().
+	Status(http.StatusOK).
+	Body().Equal("session start")
+}
+
+func TestContext_SessionDestroy(t *testing.T) {
+	// new gas
+	g := New("testfiles/config_test.yaml")
+
+
+	// set route
+	g.Router.Get("/", func(ctx *Context) error {
+		ctx.sessionManager = nil
+		ctx.cookieHandler = nil
+
+		ctx.SessionDestroy()
+
+		assert.NotNil(t, ctx.sessionManager)
+		assert.NotNil(t, ctx.cookieHandler)
+
+		return ctx.STRING(http.StatusOK, "session destroy")
+	})
+
+	// create fasthttp.RequestHandler
+	handler := g.Router.Handler
+
+	// create httpexpect instance that will call fasthtpp.RequestHandler directly
+	e := newHttpExpect(t, handler)
+
+	// run tests
+	e.GET("/").
+	Expect().
+	Status(http.StatusOK).
+	Body().Equal("session destroy")
 }
