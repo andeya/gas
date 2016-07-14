@@ -185,12 +185,12 @@ func (ctx *Context) JSON(status int, data interface{}) error {
 	ctx.SetStatusCode(status)
 
 	// encode json string
-	jsonstr, err := json.Marshal(data)
+	jsonByte, err := json.Marshal(data)
 	if err != nil {
 		return err
 	}
 
-	_, errr := ctx.Write(jsonstr)
+	_, errr := ctx.Write(jsonByte)
 
 	return errr
 }

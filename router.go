@@ -82,6 +82,7 @@ func (r *Router) wrapGasHandlerToFasthttpRouterHandler(h GasHandler) fasthttprou
 
 		if err := cpch(gasCtx); err != nil {
 			// handle error
+			r.PanicHandler(gasCtx.RequestCtx, err)
 		}
 
 		if gasCtx.isUseDB {
