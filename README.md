@@ -79,7 +79,7 @@ func GetUser(ctx *gas.Context) error {
 
 ```
 
-see [go-gas/example/micro_demo](http://github.com/go-gas/example/micro_demo)
+see [go-gas/example/micro_demo](https://github.com/go-gas/example/tree/master/micro_demo)
 
 ## Large project architecture
 
