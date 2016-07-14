@@ -224,7 +224,7 @@ import _ "github.com/go-gas/sessions/memory"
 
 And the provider package will Register to session package automaticly.
 
-Then call SessionStart, and use Get and Set to seperate your session.
+Then call SessionStart, and use Get and Set to operate your session.
 
 ```go
 s := ctx.SessionStart()
