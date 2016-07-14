@@ -1,6 +1,6 @@
 Mode: TEST
 ListenAddr: localhost
-ListenPort: 8080
+ListenPort: 8089
 PubDir: testfiles
 CertFile: certificate/localhost.cert
 KeyFile: certificate/localhost.key

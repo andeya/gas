@@ -97,6 +97,22 @@ func TestRunTLS(t *testing.T) {
 	testRequest(t, "https://localhost:8081")
 }
 
+func TestRunTLSWithConfig(t *testing.T) {
+	g := New()
+
+	g.LoadConfig("testfiles/config_test2.yaml")
+
+	// set route
+	g.Router.Get("/", indexPage)
+
+	go func() {
+		assert.NoError(t, g.RunTLS())
+	}()
+	time.Sleep(5 * time.Millisecond)
+
+	testRequest(t, "https://localhost:8089")
+}
+
 func TestGas_NewModel(t *testing.T) {
 	as := assert.New(t)
 

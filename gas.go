@@ -113,18 +113,16 @@ var defaultConfig = map[interface{}]interface{}{
 		"Password":  "",
 		"Charset":   "utf8",
 	},
-	"session": map[interface{}]interface{} {
-		"CookieName": "gas-session",
+	"session": map[interface{}]interface{}{
+		"CookieName":      "gas-session",
 		"SessionIDLength": 10,
-		"CookieLifeTime":  0, // cookie expire time
+		"CookieLifeTime":  0,    // cookie expire time
 		"ExpireTime":      3600, // time for destroy from GC
-		"GCTime":          60, // GC frequency
+		"GCTime":          60,   // GC frequency
 		"Domain":          "",
 	},
-	"sessionProvider": "memory",
-	"sessionProviderConfig": map[interface{}]interface{} {
-
-	},
+	"sessionProvider":       "memory",
+	"sessionProviderConfig": map[interface{}]interface{}{},
 }
 
 type (
@@ -220,6 +218,7 @@ func (g *Engine) Run(addr ...string) (err error) {
 	} else {
 		listenAddr = addr[0]
 	}
+
 	fmt.Println("Server is Listen on: " + listenAddr)
 
 	err = fasthttp.ListenAndServe(listenAddr, g.Router.Handler)
