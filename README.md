@@ -11,7 +11,7 @@ Gas aims to be a high performance, full-featured, easy to use, and quick develop
 
 - Router (based on [fasthttprouter](https://github.com/buaazp/fasthttprouter) package)
 - Easy to use golang template engine. (will include another template engine)
-- Context (easy to manage the request and response)
+- Context (easy to manage the request, response and session)
 - Middleware (Global and specify routing path middleware support)
 - Log package
 - Read config from a yaml file [gas-config](https://github.com/go-gas/config)
@@ -30,11 +30,64 @@ $ go get github.com/go-gas/gas
 # Run demo
 
 ```
-$ git clone https://github.com/go-gas/example.git && cd example
+$ go get github.com/go-gas/example && cd $GOPATH/src/github.com/go-gas/example
 $ go run main.go
 ```
 
-# Your project file structure
+# How to use
+
+## Micro service
+
+If you want to create a micro service, you can write all of things in one package, for example:
+
+    |-- $GOPATH
+    |   |-- src
+    |       |--Your_Project_Name
+    |          |-- main.go
+    |          |-- config.yaml
+
+main.go
+```go
+package main
+
+import (
+	"github.com/go-gas/gas"
+	"net/http"
+)
+
+func main() {
+	g := gas.New("config.yaml")
+
+	g.Router.Get("/", Index)
+	g.Router.Get("/user", GetUser)
+
+	g.Run()
+}
+
+func Index(ctx *gas.Context) error {
+	return ctx.HTML(http.StatusOK, "Micro service! <br> <a href=\"/user\">json response example</a>")
+}
+
+func GetUser(ctx *gas.Context) error {
+	user := map[string]interface{} {
+		"name": "John",
+		"Age": 100,
+	}
+
+	return ctx.JSON(http.StatusOK, user)
+}
+
+```
+
+see [go-gas/example/micro_demo](http://github.com/go-gas/example/micro_demo)
+
+## Large project architecture
+
+Write all code in one file is so dirty and hard to maintain when you build a large site include many controller, middlerware... and so on.
+
+So, maybe we can seperate them in many packages. (directorys)
+
+### file structure
 
     |-- $GOPATH
     |   |-- src
@@ -51,9 +104,11 @@ $ go run main.go
     |          |-- views
     |          |-- main.go
 
-# Quick start
 
-### Import
+### main.go
+
+#### 1. import
+
 ```go
 import (
     "Your_Project_Name/routers"
@@ -62,7 +117,7 @@ import (
 )
 ```
 
-### New
+#### 2. New
 
 ```go
 g := gas.New()
@@ -95,12 +150,13 @@ or you can give config path when new gas app
 g := gas.New("config/path1", "config/path2")
 ```
 
-### Register Routes
+#### 3. Register Routes
 
 ```go
 routers.RegistRout(g.Router)
 ```
-Then in your routers.go
+
+Then in your routers/routers.go
 
 ```go
 package routers
@@ -121,7 +177,7 @@ func RegistRout(r *gas.Router)  {
 }
 ```
 
-### Register middleware
+#### 4. Register middleware
 
 ##### Global middleware
 If you want a middleware to be run during every request to your application,
@@ -232,6 +288,7 @@ Using [go-web-framework-benchmark](https://github.com/smallnest/go-web-framework
  - [ ] Database
  - [ ] Redis
  - [ ] Memcache
+ - [x] In memory
 - [ ] Cache
  - [ ] Memory
  - [ ] File
@@ -240,5 +297,5 @@ Using [go-web-framework-benchmark](https://github.com/smallnest/go-web-framework
 - [ ] i18n
 - [x] HTTPS
 - [ ] Command line tools
-- [ ] Form handler (maybe next version)
+- [ ] Form handler
 - [ ] Security check features(csrf, xss filter...etc)
