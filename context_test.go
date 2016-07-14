@@ -6,6 +6,7 @@ import (
 	"testing"
 	_ "github.com/go-gas/sessions/memory"
 	"github.com/stretchr/testify/assert"
+	"time"
 )
 
 var (
@@ -150,6 +151,136 @@ func TestJSONResponse(t *testing.T) {
 		ContentType("application/json", "utf-8").
 		Body().Equal(string(js))
 
+}
+
+func TestContext_SetCookie(t *testing.T) {
+	// new gas
+	g := New("testfiles/config_test.yaml")
+
+
+	// set route
+	g.Router.Get("/", func(ctx *Context) error {
+		ctx.SetCookie("cookie-key", "cookie-value")
+
+		return ctx.STRING(http.StatusOK, "set cookie")
+	})
+
+	// create fasthttp.RequestHandler
+	handler := g.Router.Handler
+
+	// create httpexpect instance that will call fasthtpp.RequestHandler directly
+	e := newHttpExpect(t, handler)
+
+	// run tests
+	cookie := e.GET("/").
+	Expect().
+	Status(http.StatusOK).
+	Cookie("cookie-key")
+	cookie.Value().Equal("cookie-value")
+}
+
+func TestContext_SetCookieBytes(t *testing.T) {
+	// new gas
+	g := New("testfiles/config_test.yaml")
+
+
+	// set route
+	g.Router.Get("/", func(ctx *Context) error {
+		ctx.SetCookieBytes([]byte("cookie-key2"), []byte("cookie-value2"))
+
+		return ctx.STRING(http.StatusOK, "set cookie byte")
+	})
+
+	// create fasthttp.RequestHandler
+	handler := g.Router.Handler
+
+	// create httpexpect instance that will call fasthtpp.RequestHandler directly
+	e := newHttpExpect(t, handler)
+
+	// run tests
+	cookie := e.GET("/").
+	Expect().
+	Status(http.StatusOK).
+	Cookie("cookie-key2")
+	cookie.Value().Equal("cookie-value2")
+}
+
+func TestContext_SetCookieByConfig(t *testing.T) {
+	// new gas
+	g := New("testfiles/config_test.yaml")
+
+
+	// set route
+	g.Router.Get("/", func(ctx *Context) error {
+		cfg := &CookieSettings{
+			PathByte: []byte("/123"),
+			DomainByte: []byte("example.com"),
+			Expired: 123456,
+			HttpOnly: false,
+		}
+
+		ctx.SetCookieByConfig(cfg, "cookie-key3", "cookie-value3")
+
+		return ctx.STRING(http.StatusOK, "set cookie")
+	})
+
+	// create fasthttp.RequestHandler
+	handler := g.Router.Handler
+
+	// create httpexpect instance that will call fasthtpp.RequestHandler directly
+	e := newHttpExpect(t, handler)
+
+	// run tests
+	n := time.Now()
+	cookie := e.GET("/").
+	Expect().
+	Status(http.StatusOK).
+	Cookie("cookie-key3")
+	cookie.Value().Equal("cookie-value3")
+	cookie.Domain().Equal("example.com")
+	cookie.Path().Equal("/123")
+	cookie.Expires().InRange(n, n.Add(time.Second * 123459))
+	httponly := cookie.Raw().HttpOnly
+	assert.Equal(t, false, httponly)
+}
+
+func TestContext_SetCookieByConfigWithBytes(t *testing.T) {
+	// new gas
+	g := New("testfiles/config_test.yaml")
+
+
+	// set route
+	g.Router.Get("/", func(ctx *Context) error {
+		cfg := &CookieSettings{
+			PathByte: []byte("/123"),
+			DomainByte: []byte("example.com"),
+			Expired: 123456,
+			HttpOnly: false,
+		}
+
+		ctx.SetCookieByConfigWithBytes(cfg, []byte("cookie-key4"), []byte("cookie-value4"))
+
+		return ctx.STRING(http.StatusOK, "set cookie")
+	})
+
+	// create fasthttp.RequestHandler
+	handler := g.Router.Handler
+
+	// create httpexpect instance that will call fasthtpp.RequestHandler directly
+	e := newHttpExpect(t, handler)
+
+	// run tests
+	n := time.Now()
+	cookie := e.GET("/").
+	Expect().
+	Status(http.StatusOK).
+	Cookie("cookie-key4")
+	cookie.Value().Equal("cookie-value4")
+	cookie.Domain().Equal("example.com")
+	cookie.Path().Equal("/123")
+	cookie.Expires().InRange(n, n.Add(time.Second * 123459))
+	httponly := cookie.Raw().HttpOnly
+	assert.Equal(t, false, httponly)
 }
 
 func TestContext_SessionStart(t *testing.T) {

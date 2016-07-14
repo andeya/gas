@@ -8,6 +8,7 @@ import (
 	"github.com/valyala/fasthttp"
 	"html/template"
 	"github.com/go-gas/sessions"
+	"time"
 )
 
 // D is JSON Data Type
@@ -29,16 +30,36 @@ type Context struct {
 	isUseDB bool
 	mobj    model.ModelInterface
 
+	// cookie
+	defaultCookieConfig *CookieSettings
+
 	// session
 	isUseSession bool
 	sessionManager *sessions.SessionManager
 	cookieHandler sessions.HTTPCookieHandlerInterface
 }
 
+type CookieSettings struct {
+	PathByte []byte
+	PathString string
+
+	DomainByte []byte
+	DomainString string
+
+	Expired int
+	HttpOnly bool
+}
+
 // create context
 //func createContext(w *ResponseWriter, r *http.Request, g *Engine) *Context {
 func createContext(r *fasthttp.RequestCtx, g *Engine) *Context {
-	c := &Context{}
+	c := &Context{
+		defaultCookieConfig: &CookieSettings{
+			PathByte: []byte("/"),
+			Expired: 60 * 60 * 24, // one day
+			HttpOnly: true,
+		},
+	}
 	//c.RespWriter = w
 	c.RequestCtx = r
 	c.gas = g
@@ -198,7 +219,80 @@ func (ctx *Context) CloseDB() error {
 }
 
 
-// ==== session management ====
+// ==== cookie ====
+
+func (ctx *Context) SetCookie(key, value string) {
+	c := ctx.generateCookieFromConfig(ctx.defaultCookieConfig)
+
+	c.SetKey(key)
+	c.SetValue(value)
+
+	ctx.Request.Header.SetCookie(key, value)
+	ctx.Response.Header.SetCookie(c)
+}
+
+func (ctx *Context) SetCookieBytes(key, value []byte) {
+	c := ctx.generateCookieFromConfig(ctx.defaultCookieConfig)
+
+	c.SetKeyBytes(key)
+	c.SetValueBytes(value)
+
+	ctx.Request.Header.SetCookieBytesKV(key, value)
+	ctx.Response.Header.SetCookie(c)
+}
+
+func (ctx *Context) SetCookieByConfig(cfg *CookieSettings, key, value string) {
+	c := ctx.generateCookieFromConfig(cfg)
+
+	c.SetKey(key)
+	c.SetValue(value)
+
+	ctx.Request.Header.SetCookie(key, value)
+	ctx.Response.Header.SetCookie(c)
+}
+
+func (ctx *Context) SetCookieByConfigWithBytes(cfg *CookieSettings, key, value []byte) {
+	c := ctx.generateCookieFromConfig(cfg)
+
+	c.SetKeyBytes(key)
+	c.SetValueBytes(value)
+
+	ctx.Request.Header.SetCookieBytesKV(key, value)
+	ctx.Response.Header.SetCookie(c)
+}
+
+func (ctx *Context) generateCookieFromConfig(cfg *CookieSettings) *fasthttp.Cookie {
+	c := fasthttp.AcquireCookie()
+	c.Reset()
+
+	if len(cfg.PathByte) != 0 {
+		c.SetPathBytes(cfg.PathByte)
+	} else if cfg.PathString != "" {
+		c.SetPath(cfg.PathString)
+	}
+
+	if len(cfg.DomainByte) != 0 {
+		c.SetDomainBytes(cfg.DomainByte)
+	} else if cfg.DomainString != "" {
+		c.SetDomain(cfg.DomainString)
+	}
+
+	if cfg.Expired != 0 {
+		c.SetExpire(time.Now().Add(time.Duration(cfg.Expired) * time.Second))
+	}
+
+	c.SetHTTPOnly(cfg.HttpOnly)
+
+	return c
+}
+
+func (ctx *Context) GetCookie(key string) []byte {
+	return ctx.Request.Header.Cookie(key)
+}
+
+
+// ==== session management  ====
+
 func (ctx *Context) SessionStart() sessions.SessionInterface {
 	// read session provider from config
 	if ctx.sessionManager == nil {
