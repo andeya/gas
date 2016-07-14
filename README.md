@@ -177,7 +177,65 @@ func RegistRout(r *gas.Router)  {
 }
 ```
 
-#### 4. Register middleware
+#### 4. Using gas.Context
+
+##### Cookie
+
+gas context provides set cookie with string or []bytes, you don't need to do type assertion.
+
+```go
+ctx.SetCookie("key", "value")
+ctx.SetCookieBytes([]byte("key"), []byte("value"))
+```
+
+and you can set cookie detail using gas.CookieSettings struct 
+```go
+type CookieSettings struct {
+	PathByte []byte
+	PathString string
+
+	DomainByte []byte
+	DomainString string
+
+	Expired int
+	HttpOnly bool
+}
+```
+for example:
+
+```go
+cfg := &CookieSettings{
+	PathByte: []byte("/somePath"),
+	DomainByte: []byte("example.com"),
+	Expired: 3600,
+	HttpOnly: true,
+}
+
+ctx.SetCookieByConfig(cfg, "key", "value")
+```
+
+##### Session
+
+First, you must import provider package before call SessionStart.
+
+```go
+import _ "github.com/go-gas/sessions/memory"
+```
+
+And the provider package will Register to session package automaticly.
+
+Then call SessionStart, and use Get and Set to seperate your session.
+
+```go
+s := ctx.SessionStart()
+s.Set("key", "value")
+d := s.Get("value").(string)
+```
+
+The Get function will return interface{} type, you must know the data type and do type assertion your self.
+
+
+#### 5. Register middleware
 
 ##### Global middleware
 If you want a middleware to be run during every request to your application,
