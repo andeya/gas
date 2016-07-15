@@ -1,6 +1,9 @@
 
 TARGETS_NOVENDOR := $(shell glide novendor)
 
+lint:
+	golint .
+
 fmt:
 	@echo $(TARGETS_NOVENDOR) | xargs go fmt
 

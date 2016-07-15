@@ -5,9 +5,9 @@ import (
 	"errors"
 	"github.com/buaazp/fasthttprouter"
 	"github.com/go-gas/gas/model"
+	"github.com/go-gas/sessions"
 	"github.com/valyala/fasthttp"
 	"html/template"
-	"github.com/go-gas/sessions"
 	"time"
 )
 
@@ -34,19 +34,19 @@ type Context struct {
 	defaultCookieConfig *CookieSettings
 
 	// session
-	isUseSession bool
+	isUseSession   bool
 	sessionManager *sessions.SessionManager
-	cookieHandler sessions.HTTPCookieHandlerInterface
+	cookieHandler  sessions.HTTPCookieHandlerInterface
 }
 
 type CookieSettings struct {
-	PathByte []byte
+	PathByte   []byte
 	PathString string
 
-	DomainByte []byte
+	DomainByte   []byte
 	DomainString string
 
-	Expired int
+	Expired  int
 	HttpOnly bool
 }
 
@@ -56,7 +56,7 @@ func createContext(r *fasthttp.RequestCtx, g *Engine) *Context {
 	c := &Context{
 		defaultCookieConfig: &CookieSettings{
 			PathByte: []byte("/"),
-			Expired: 60 * 60 * 24, // one day
+			Expired:  60 * 60 * 24, // one day
 			HttpOnly: true,
 		},
 	}
@@ -218,7 +218,6 @@ func (ctx *Context) CloseDB() error {
 	return ctx.mobj.Builder().GetDB().Close()
 }
 
-
 // ==== cookie ====
 
 func (ctx *Context) SetCookie(key, value string) {
@@ -289,7 +288,6 @@ func (ctx *Context) generateCookieFromConfig(cfg *CookieSettings) *fasthttp.Cook
 func (ctx *Context) GetCookie(key string) []byte {
 	return ctx.Request.Header.Cookie(key)
 }
-
 
 // ==== session management  ====
 

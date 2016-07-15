@@ -2,10 +2,10 @@ package gas
 
 import (
 	"encoding/json"
-	"net/http"
-	"testing"
 	_ "github.com/go-gas/sessions/memory"
 	"github.com/stretchr/testify/assert"
+	"net/http"
+	"testing"
 	"time"
 )
 
@@ -157,7 +157,6 @@ func TestContext_SetCookie(t *testing.T) {
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
-
 	// set route
 	g.Router.Get("/", func(ctx *Context) error {
 		ctx.SetCookie("cookie-key", "cookie-value")
@@ -173,16 +172,15 @@ func TestContext_SetCookie(t *testing.T) {
 
 	// run tests
 	cookie := e.GET("/").
-	Expect().
-	Status(http.StatusOK).
-	Cookie("cookie-key")
+		Expect().
+		Status(http.StatusOK).
+		Cookie("cookie-key")
 	cookie.Value().Equal("cookie-value")
 }
 
 func TestContext_SetCookieBytes(t *testing.T) {
 	// new gas
 	g := New("testfiles/config_test.yaml")
-
 
 	// set route
 	g.Router.Get("/", func(ctx *Context) error {
@@ -199,9 +197,9 @@ func TestContext_SetCookieBytes(t *testing.T) {
 
 	// run tests
 	cookie := e.GET("/").
-	Expect().
-	Status(http.StatusOK).
-	Cookie("cookie-key2")
+		Expect().
+		Status(http.StatusOK).
+		Cookie("cookie-key2")
 	cookie.Value().Equal("cookie-value2")
 }
 
@@ -209,14 +207,13 @@ func TestContext_SetCookieByConfig(t *testing.T) {
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
-
 	// set route
 	g.Router.Get("/", func(ctx *Context) error {
 		cfg := &CookieSettings{
-			PathByte: []byte("/123"),
+			PathByte:   []byte("/123"),
 			DomainByte: []byte("example.com"),
-			Expired: 123456,
-			HttpOnly: false,
+			Expired:    123456,
+			HttpOnly:   false,
 		}
 
 		ctx.SetCookieByConfig(cfg, "cookie-key3", "cookie-value3")
@@ -233,13 +230,13 @@ func TestContext_SetCookieByConfig(t *testing.T) {
 	// run tests
 	n := time.Now()
 	cookie := e.GET("/").
-	Expect().
-	Status(http.StatusOK).
-	Cookie("cookie-key3")
+		Expect().
+		Status(http.StatusOK).
+		Cookie("cookie-key3")
 	cookie.Value().Equal("cookie-value3")
 	cookie.Domain().Equal("example.com")
 	cookie.Path().Equal("/123")
-	cookie.Expires().InRange(n, n.Add(time.Second * 123459))
+	cookie.Expires().InRange(n, n.Add(time.Second*123459))
 	httponly := cookie.Raw().HttpOnly
 	assert.Equal(t, false, httponly)
 }
@@ -248,14 +245,13 @@ func TestContext_SetCookieByConfigWithBytes(t *testing.T) {
 	// new gas
 	g := New("testfiles/config_test.yaml")
 
-
 	// set route
 	g.Router.Get("/", func(ctx *Context) error {
 		cfg := &CookieSettings{
-			PathByte: []byte("/123"),
+			PathByte:   []byte("/123"),
 			DomainByte: []byte("example.com"),
-			Expired: 123456,
-			HttpOnly: false,
+			Expired:    123456,
+			HttpOnly:   false,
 		}
 
 		ctx.SetCookieByConfigWithBytes(cfg, []byte("cookie-key4"), []byte("cookie-value4"))
@@ -272,13 +268,13 @@ func TestContext_SetCookieByConfigWithBytes(t *testing.T) {
 	// run tests
 	n := time.Now()
 	cookie := e.GET("/").
-	Expect().
-	Status(http.StatusOK).
-	Cookie("cookie-key4")
+		Expect().
+		Status(http.StatusOK).
+		Cookie("cookie-key4")
 	cookie.Value().Equal("cookie-value4")
 	cookie.Domain().Equal("example.com")
 	cookie.Path().Equal("/123")
-	cookie.Expires().InRange(n, n.Add(time.Second * 123459))
+	cookie.Expires().InRange(n, n.Add(time.Second*123459))
 	httponly := cookie.Raw().HttpOnly
 	assert.Equal(t, false, httponly)
 }
@@ -286,7 +282,6 @@ func TestContext_SetCookieByConfigWithBytes(t *testing.T) {
 func TestContext_SessionStart(t *testing.T) {
 	// new gas
 	g := New("testfiles/config_test.yaml")
-
 
 	// set route
 	g.Router.Get("/", func(ctx *Context) error {
@@ -305,15 +300,14 @@ func TestContext_SessionStart(t *testing.T) {
 
 	// run tests
 	e.GET("/").
-	Expect().
-	Status(http.StatusOK).
-	Body().Equal("session start")
+		Expect().
+		Status(http.StatusOK).
+		Body().Equal("session start")
 }
 
 func TestContext_SessionDestroy(t *testing.T) {
 	// new gas
 	g := New("testfiles/config_test.yaml")
-
 
 	// set route
 	g.Router.Get("/", func(ctx *Context) error {
@@ -336,7 +330,7 @@ func TestContext_SessionDestroy(t *testing.T) {
 
 	// run tests
 	e.GET("/").
-	Expect().
-	Status(http.StatusOK).
-	Body().Equal("session destroy")
+		Expect().
+		Status(http.StatusOK).
+		Body().Equal("session destroy")
 }
