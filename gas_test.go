@@ -83,6 +83,22 @@ func TestRun(t *testing.T) {
 	testRequest(t, "http://localhost:8080")
 }
 
+func TestRunWithDefine(t *testing.T) {
+	g := New()
+
+	// set route
+	g.Router.Get("/", indexPage)
+
+	go func() {
+		assert.NoError(t, g.Run(":9000"))
+	}()
+	// have to wait for the goroutine to start and run the server
+	// otherwise the main thread will complete
+	time.Sleep(5 * time.Millisecond)
+
+	testRequest(t, "http://localhost:9000")
+}
+
 func TestRunTLS(t *testing.T) {
 	g := New()
 

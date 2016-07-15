@@ -14,4 +14,4 @@ coverage:
 	sh test.sh count
 
 html: coverage
-	go tool cover -html=coverage.txt && unlink coverage.txt
+	go tool cover -html=coverage.txt
