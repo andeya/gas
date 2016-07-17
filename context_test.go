@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	jsonMap = JSON{
+	jsonMap = H{
 		"Test": "index page",
 	}
 
