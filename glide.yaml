@@ -1,0 +1,14 @@
+package: github.com/go-gas/gas
+import:
+- package: github.com/buaazp/fasthttprouter
+- package: github.com/go-gas/SQLBuilder
+  subpackages:
+  - MySQLBuilder
+- package: github.com/go-gas/config
+- package: github.com/go-gas/sessions
+- package: github.com/valyala/fasthttp
+testImport:
+- package: github.com/gavv/httpexpect
+- package: github.com/stretchr/testify
+  subpackages:
+  - assert
