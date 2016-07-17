@@ -1,0 +1,93 @@
+hash: 3180bf09e09e93409886fd2aa4d74ab9391694cfdbefc0c831444e07684086a7
+updated: 2016-07-17T23:23:19.186244342+08:00
+imports:
+- name: github.com/buaazp/fasthttprouter
+  version: 0729217d031ab353a3e34b94e8544e167f7ce9a4
+- name: github.com/go-gas/config
+  version: e1b4f975e31c4faea52da10a5e5e8ffde9e00dbb
+- name: github.com/go-gas/gas
+  version: 4049fdfb7b8f3187e73c55cf4528f3367cc22e9a
+  subpackages:
+  - logger
+  - model
+  - model/MySQL
+- name: github.com/go-gas/sessions
+  version: 8c6e1496e614bd57c8b9007d1f53be2bdcca1118
+  subpackages:
+  - memory
+- name: github.com/go-gas/SQLBuilder
+  version: 97295e5ef6a4576a1d6b5dae266dd6c5a3898450
+  subpackages:
+  - MySQLBuilder
+- name: github.com/go-sql-driver/mysql
+  version: 3654d25ec346ee8ce71a68431025458d52a38ac0
+- name: github.com/klauspost/compress
+  version: 14eb9c4951195779ecfbec34431a976de7335b0a
+  subpackages:
+  - flate
+  - gzip
+  - zlib
+- name: github.com/klauspost/cpuid
+  version: 09cded8978dc9e80714c4d85b0322337b0a1e5e0
+- name: github.com/klauspost/crc32
+  version: 19b0b332c9e4516a6370a0456e6182c3b5036720
+- name: github.com/valyala/bytebufferpool
+  version: 8ebd0474e5a2f0a5c7a74ad2bf421a1d1a90264f
+- name: github.com/valyala/fasthttp
+  version: 881ac52b00ef21896de49a8aa185467c8a9ae49c
+  subpackages:
+  - fasthttputil
+- name: gopkg.in/yaml.v2
+  version: e4d366fc3c7938e2958e662b4258c7a89e1f0e3e
+testImports:
+- name: github.com/ajg/form
+  version: 7ff89c75808766205bfa4411abb436c98c33eb5e
+- name: github.com/davecgh/go-spew
+  version: 5215b55f46b2b919f50a1df0eaa5886afe4e3b3d
+  subpackages:
+  - spew
+- name: github.com/fatih/structs
+  version: be738c8546f55b34e60125afa50ed73a9a9c460e
+- name: github.com/gavv/gojsondiff
+  version: 36046c6e558e7f854ebd3fd97d1e9812ebe8709b
+  subpackages:
+  - formatter
+- name: github.com/gavv/httpexpect
+  version: b5a77ac370dcc9bc2021de6e4144d364de272cba
+- name: github.com/gavv/monotime
+  version: 259cd7b345f5aa080eff16f21d7866ef7dea9528
+- name: github.com/google/go-querystring
+  version: 9235644dd9e52eeae6fa48efd539fdc351a0af53
+  subpackages:
+  - query
+- name: github.com/imkira/go-interpol
+  version: b9781c93ae51c8b4fc3af1b1426909721af0a624
+- name: github.com/moul/http2curl
+  version: b1479103caacaa39319f75e7f57fc545287fca0d
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
+- name: github.com/sergi/go-diff
+  version: 97b2266dfe4bd4ea1b81a463322f04f8b724801e
+  subpackages:
+  - diffmatchpatch
+- name: github.com/stretchr/testify
+  version: d77da356e56a7428ad25149ca77381849a6a5232
+  subpackages:
+  - assert
+  - require
+- name: github.com/xeipuuv/gojsonpointer
+  version: e0fe6f68307607d540ed8eac07a342c33fa1b54a
+- name: github.com/xeipuuv/gojsonreference
+  version: e02fc20de94c78484cd5ffb007f8af96be030a45
+- name: github.com/xeipuuv/gojsonschema
+  version: 66a3de92def23708184148ae337750915875e7c1
+- name: github.com/yalp/jsonpath
+  version: 31a79c7593bb93eb10b163650d4a3e6ca190e4dc
+- name: github.com/yudai/golcs
+  version: d1c525dea8ce39ea9a783d33cf08932305373f2c
+- name: golang.org/x/net
+  version: be28236b9034a52ec04f37f16f355b4bde7807e2
+  subpackages:
+  - publicsuffix

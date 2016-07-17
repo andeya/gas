@@ -18,7 +18,7 @@ before_install:
   - curl https://glide.sh/get | sh
 
 install:
-  - go get -t -v ./...
+  - make install
 
 script:
   - make coverage
