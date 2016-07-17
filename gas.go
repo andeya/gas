@@ -181,9 +181,6 @@ func New(configPath ...string) *Engine {
 	// set static file path
 	g.Router.StaticPath(g.Config.GetString("PubDir"))
 
-	// add Log middleware
-	// g.Router.Use(middleware.LogMiddleware)
-
 	return g
 }
 

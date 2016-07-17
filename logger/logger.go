@@ -80,6 +80,9 @@ func (l *Logger) writeLog(level int, log string) error {
 	// trim \n
 	log = strings.Trim(log, "\n") + "\n"
 
+	// add log mode
+	log = fmt.Sprintf("[%s]%s", LOG_LEVEL[level], log)
+
 	f, err := os.OpenFile(l.logPath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 06666)
 	if err != nil {
 		panic(err)
