@@ -94,6 +94,7 @@ import (
 	"github.com/go-gas/gas/model/MySQL"
 	"github.com/valyala/fasthttp"
 	"net"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -141,6 +142,9 @@ type (
 		model.Model
 	}
 )
+
+// NotFoundString is 404 http status string
+var default404Body = "404 page not found."
 
 // New gas Object
 //
@@ -195,7 +199,7 @@ func Default(configPath ...string) *Engine {
 }
 
 func defaultNotFoundHandler(c *Context) error {
-	return c.STRING(404, "Page Not Found.")
+	return c.STRING(http.StatusNotFound, default404Body)
 }
 
 func defaultPanicHandler(c *Context, rcv interface{}) error {

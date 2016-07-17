@@ -65,6 +65,12 @@ func TestGas(t *testing.T) {
 		Expect().
 		Status(http.StatusOK).
 		Body().Equal(indexString)
+
+	// test 404 not found
+	e.GET("/gas").
+		Expect().
+		Status(http.StatusNotFound).
+		Body().Equal(default404Body)
 }
 
 func TestRun(t *testing.T) {
