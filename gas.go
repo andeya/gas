@@ -187,6 +187,13 @@ func New(configPath ...string) *Engine {
 	return g
 }
 
+// Default gas object auto enable Logger middleware
+func Default(configPath ...string) *Engine {
+	g := New(configPath...)
+	g.Router.Use(Logger)
+	return g
+}
+
 func defaultNotFoundHandler(c *Context) error {
 	return c.STRING(404, "Page Not Found.")
 }
@@ -271,7 +278,7 @@ func Logger(next GasHandler) GasHandler {
 			path = "/"
 		}
 
-		status := c.Response.StatusCode() //RespWriter.Status()
+		status := c.Response.StatusCode()
 
 		logstr := "[" + start.Format("2006-01-02 15:04:05") + "][" + strconv.Itoa(status) + "][" + remoteAddr + "] " + method + " " + path + " Params: " + c.Request.PostArgs().String() + " ExecTime: " + stop.Sub(start).String()
 		l.Info(logstr)
