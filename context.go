@@ -11,8 +11,8 @@ import (
 	"time"
 )
 
-// D is JSON Data Type
-type JSON map[string]interface{}
+// H is JSON Data Type
+type H map[string]interface{}
 
 type Context struct {
 	//context.Context
