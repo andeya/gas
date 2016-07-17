@@ -254,8 +254,6 @@ func (g *Engine) RunTLS(addr ...string) (err error) {
 
 func Logger(next GasHandler) GasHandler {
 	return func(c *Context) error {
-		// req := c.Request()
-		// res := c.Response()
 		l := logger.New("log/logs.txt")
 
 		remoteAddr := c.RemoteAddr().String()

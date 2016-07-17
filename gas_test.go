@@ -113,6 +113,21 @@ func TestRunWithDefault(t *testing.T) {
 	time.Sleep(5 * time.Millisecond)
 
 	testRequest(t, "http://localhost:9001")
+
+	e := newHttpExpect(t, g.Router.Handler)
+	// test X-Real-IP
+	e.GET("/").
+		WithHeader("X-Real-IP", "192.168.1.1").
+		Expect().
+		Status(http.StatusOK).
+		Body().Equal(indexString)
+
+	// test X-Forwarded-For
+	e.GET("/").
+		WithHeader("X-Forwarded-For", "192.168.1.2").
+		Expect().
+		Status(http.StatusOK).
+		Body().Equal(indexString)
 }
 
 func TestRunTLS(t *testing.T) {

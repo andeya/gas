@@ -117,7 +117,16 @@ import (
 )
 ```
 
-#### 2. New
+#### 2. New or Default
+
+`Default` returns an Engine instance with the `Logger` middleware already attached.
+
+```go
+g := gas.Default()
+g.LoadConfig("your/config/path")
+```
+
+`New` returns a new blank Engine instance without any middleware attached.
 
 ```go
 g := gas.New()
@@ -188,7 +197,7 @@ ctx.SetCookie("key", "value")
 ctx.SetCookieBytes([]byte("key"), []byte("value"))
 ```
 
-and you can set cookie detail using gas.CookieSettings struct 
+and you can set cookie detail using gas.CookieSettings struct
 ```go
 type CookieSettings struct {
 	PathByte []byte
