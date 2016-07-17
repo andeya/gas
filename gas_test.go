@@ -99,6 +99,37 @@ func TestRunWithDefine(t *testing.T) {
 	testRequest(t, "http://localhost:9000")
 }
 
+func TestRunWithDefault(t *testing.T) {
+	g := Default()
+
+	// set route
+	g.Router.Get("/", indexPage)
+
+	go func() {
+		assert.NoError(t, g.Run(":9001"))
+	}()
+	// have to wait for the goroutine to start and run the server
+	// otherwise the main thread will complete
+	time.Sleep(5 * time.Millisecond)
+
+	testRequest(t, "http://localhost:9001")
+
+	e := newHttpExpect(t, g.Router.Handler)
+	// test X-Real-IP
+	e.GET("/").
+		WithHeader("X-Real-IP", "192.168.1.1").
+		Expect().
+		Status(http.StatusOK).
+		Body().Equal(indexString)
+
+	// test X-Forwarded-For
+	e.GET("/").
+		WithHeader("X-Forwarded-For", "192.168.1.2").
+		Expect().
+		Status(http.StatusOK).
+		Body().Equal(indexString)
+}
+
 func TestRunTLS(t *testing.T) {
 	g := New()
 

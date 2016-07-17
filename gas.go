@@ -93,9 +93,12 @@ import (
 	"github.com/go-gas/gas/model"
 	"github.com/go-gas/gas/model/MySQL"
 	"github.com/valyala/fasthttp"
+	"net"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 var defaultConfig = map[interface{}]interface{}{
@@ -184,6 +187,13 @@ func New(configPath ...string) *Engine {
 	return g
 }
 
+// Default gas object auto enable Logger middleware
+func Default(configPath ...string) *Engine {
+	g := New(configPath...)
+	g.Router.Use(Logger)
+	return g
+}
+
 func defaultNotFoundHandler(c *Context) error {
 	return c.STRING(404, "Page Not Found.")
 }
@@ -240,6 +250,39 @@ func (g *Engine) RunTLS(addr ...string) (err error) {
 
 	err = fasthttp.ListenAndServeTLS(listenAddr, certFile, keyFile, g.Router.Handler)
 	return
+}
+
+func Logger(next GasHandler) GasHandler {
+	return func(c *Context) error {
+		l := logger.New("log/logs.txt")
+
+		remoteAddr := c.RemoteAddr().String()
+		if ip := string(c.Request.Header.Peek(XRealIP)); ip != "" {
+			remoteAddr = ip
+		} else if ip = string(c.Request.Header.Peek(XForwardedFor)); ip != "" {
+			remoteAddr = ip
+		} else {
+			remoteAddr, _, _ = net.SplitHostPort(remoteAddr)
+		}
+
+		start := time.Now()
+
+		err := next(c)
+
+		stop := time.Now()
+		method := string(c.Method())
+		path := string(c.Path())
+		if path == "" {
+			path = "/"
+		}
+
+		status := c.Response.StatusCode()
+
+		logstr := "[" + start.Format("2006-01-02 15:04:05") + "][" + strconv.Itoa(status) + "][" + remoteAddr + "] " + method + " " + path + " Params: " + c.Request.PostArgs().String() + " ExecTime: " + stop.Sub(start).String()
+		l.Info(logstr)
+
+		return err
+	}
 }
 
 // New model according to config settings
