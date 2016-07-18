@@ -5,6 +5,7 @@ import:
   subpackages:
   - MySQLBuilder
 - package: github.com/go-gas/config
+- package: github.com/go-gas/logger
 - package: github.com/go-gas/sessions
 - package: github.com/valyala/fasthttp
 testImport:
