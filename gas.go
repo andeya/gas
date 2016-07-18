@@ -89,9 +89,9 @@ package gas
 import (
 	"fmt"
 	"github.com/go-gas/config"
-	"github.com/go-gas/gas/logger"
 	"github.com/go-gas/gas/model"
 	"github.com/go-gas/gas/model/MySQL"
+	"github.com/go-gas/logger"
 	"github.com/valyala/fasthttp"
 	"net"
 	"net/http"
