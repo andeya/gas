@@ -28,13 +28,6 @@ other features are highly active development
 $ go get github.com/go-gas/gas
 ```
 
-# Run demo
-
-```
-$ go get github.com/go-gas/example && cd $GOPATH/src/github.com/go-gas/example
-$ go run main.go
-```
-
 # How to use
 
 ## Micro service
@@ -48,36 +41,34 @@ If you want to create a micro service, you can write all of things in one packag
     |          |-- config.yaml
 
 main.go
+
 ```go
 package main
 
 import (
-	"github.com/go-gas/gas"
-	"net/http"
+  "github.com/go-gas/gas"
+  "net/http"
 )
 
 func main() {
-	g := gas.New("config.yaml")
+  g := gas.Default("config.yaml")
 
-	g.Router.Get("/", Index)
-	g.Router.Get("/user", GetUser)
+  g.Router.Get("/", Index)
+  g.Router.Get("/user", GetUser)
 
-	g.Run()
+  g.Run()
 }
 
 func Index(ctx *gas.Context) error {
-	return ctx.HTML(http.StatusOK, "Micro service! <br> <a href=\"/user\">json response example</a>")
+  return ctx.HTML(http.StatusOK, "Micro service! <br> <a href=\"/user\">json response example</a>")
 }
 
 func GetUser(ctx *gas.Context) error {
-	user := map[string]interface{} {
-		"name": "John",
-		"Age": 100,
-	}
-
-	return ctx.JSON(http.StatusOK, user)
+  return ctx.JSON(http.StatusOK, gas.H{
+    "name": "John",
+    "age":  32,
+  })
 }
-
 ```
 
 see [go-gas/example/micro_demo](https://github.com/go-gas/example/tree/master/micro_demo)
