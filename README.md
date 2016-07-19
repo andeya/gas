@@ -13,9 +13,10 @@ Gas aims to be a high performance, full-featured, easy to use, and quick develop
 - Easy to use golang template engine. (will include another template engine)
 - Context (easy to manage the request, response and session)
 - Middleware (Global and specify routing path middleware support)
-- Log package
+- Logger package [gas-logger](https://github.com/go-gas/logger)
 - Read config from a yaml file [gas-config](https://github.com/go-gas/config)
 - Database model (developing, based on [go-gas/SQLBuilder](https://github.com/go-gas/SQLBuilder))
+- HTTP/HTTPS Protocol.
 
 other features are highly active development
 
