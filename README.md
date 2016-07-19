@@ -7,7 +7,7 @@
 
 Gas aims to be a high performance, full-featured, easy to use, and quick develop backend web application framework in Golang.
 
-# Features
+## Features
 
 - Router (based on [fasthttprouter](https://github.com/buaazp/fasthttprouter) package)
 - Easy to use golang template engine. (will include another template engine)
@@ -22,15 +22,15 @@ other features are highly active development
 
 ##### and you can see example at [gas-example](https://github.com/go-gas/example).
 
-# Install
+## Install
 
 ```
 $ go get github.com/go-gas/gas
 ```
 
-# How to use
+## How to use
 
-## Micro service
+### Micro service
 
 If you want to create a micro service, you can write all of things in one package, for example:
 
@@ -73,13 +73,13 @@ func GetUser(ctx *gas.Context) error {
 
 see [go-gas/example/micro_demo](https://github.com/go-gas/example/tree/master/micro_demo)
 
-## Large project architecture
+### Large project architecture
 
 Write all code in one file is so dirty and hard to maintain when you build a large site include many controller, middlerware... and so on.
 
 So, maybe we can seperate them in many packages. (directorys)
 
-### file structure
+#### file structure
 
     |-- $GOPATH
     |   |-- src
@@ -97,9 +97,9 @@ So, maybe we can seperate them in many packages. (directorys)
     |          |-- main.go
 
 
-### main.go
+#### main.go
 
-#### 1. import
+##### 1. import
 
 ```go
 import (
@@ -109,7 +109,7 @@ import (
 )
 ```
 
-#### 2. New or Default
+##### 2. New or Default
 
 `Default` returns an Engine instance with the `Logger` middleware already attached.
 
@@ -151,7 +151,7 @@ or you can give config path when new gas app
 g := gas.New("config/path1", "config/path2")
 ```
 
-#### 3. Register Routes
+##### 3. Register Routes
 
 ```go
 routers.RegistRout(g.Router)
@@ -178,9 +178,9 @@ func RegistRout(r *gas.Router)  {
 }
 ```
 
-#### 4. Using gas.Context
+##### 4. Using gas.Context
 
-##### Cookie
+###### Cookie
 
 gas context provides set cookie with string or []bytes, you don't need to do type assertion.
 
@@ -202,6 +202,7 @@ type CookieSettings struct {
 	HttpOnly bool
 }
 ```
+
 for example:
 
 ```go
@@ -215,7 +216,7 @@ cfg := &CookieSettings{
 ctx.SetCookieByConfig(cfg, "key", "value")
 ```
 
-##### Session
+###### Session
 
 First, you must import provider package before call SessionStart.
 
@@ -235,10 +236,10 @@ d := s.Get("value").(string)
 
 The Get function will return interface{} type, you must know the data type and do type assertion your self.
 
+##### 5. Register middleware
 
-#### 5. Register middleware
+###### Global middleware
 
-##### Global middleware
 If you want a middleware to be run during every request to your application,
 you can use Router.Use function to register your middleware.
 
@@ -246,7 +247,8 @@ you can use Router.Use function to register your middleware.
 g.Router.Use(middleware.LogMiddleware)
 ```
 
-##### Assigning middleware to Route
+###### Assigning middleware to Route
+
 If you want to assign middleware to specific routes,
 you can set your middlewares after set route function like:
 
@@ -254,7 +256,7 @@ you can set your middlewares after set route function like:
 r.Get("/", controllers.IndexPage, myMiddleware1, myMiddleware2)
 ```
 
-##### And you can write your own middleware function
+And you can write your own middleware function
 
 ```go
 func LogMiddleware(next gas.GasHandler) gas.GasHandler {
@@ -279,7 +281,7 @@ func MyMiddleware2 (ctx *gas.Context) error {
 }
 ```
 
-### The final step
+#### The final step
 
 Run and listen your web application with default `8080` port.
 
@@ -307,21 +309,21 @@ g.RunUNIX("/tmp/gas.sock", 0644)
 
 but I recommend setting listen address in config files.
 
-# Benchmark
+## Benchmark
 
 Using [go-web-framework-benchmark](https://github.com/smallnest/go-web-framework-benchmark) to benchmark with another web fframework.
 
 <img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/benchmark.png" alt="go-gas-benchmark" />
 
-#### Benchmark-alloc
+### Benchmark-alloc
 
 <img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/benchmark_alloc.png" alt="go-gas-benchmark-alloc" />
 
-#### Benchmark-latency
+### Benchmark-latency
 
 <img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/benchmark_latency.png" alt="go-gas-benchmark-latency" />
 
-#### Benchmark-pipeline
+### Benchmark-pipeline
 
 <img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/benchmark-pipeline.png" alt="go-gas-benchmark-pipeline" />
 
@@ -329,19 +331,19 @@ Using [go-web-framework-benchmark](https://github.com/smallnest/go-web-framework
 
 <img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/concurrency.png" alt="go-gas-concurrency" />
 
-#### Concurrency-alloc
+### Concurrency-alloc
 
 <img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/concurrency_alloc.png" alt="go-gas-concurrency-alloc" />
 
-#### Concurrency-latency
+### Concurrency-latency
 
 <img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/concurrency_latency.png" alt="go-gas-concurrency-latency" />
 
-#### Concurrency-pipeline
+### Concurrency-pipeline
 
 <img src="https://raw.githubusercontent.com/go-gas/go-web-framework-benchmark/master/concurrency-pipeline.png" alt="go-gas-concurrency-pipeline" />
 
-### Roadmap
+## Roadmap
 
 - [ ] Router
  - [ ] Group Routing
