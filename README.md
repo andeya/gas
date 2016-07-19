@@ -16,7 +16,7 @@ Gas aims to be a high performance, full-featured, easy to use, and quick develop
 - Logger package [gas-logger](https://github.com/go-gas/logger)
 - Read config from a yaml file [gas-config](https://github.com/go-gas/config)
 - Database model (developing, based on [go-gas/SQLBuilder](https://github.com/go-gas/SQLBuilder))
-- HTTP/HTTPS Protocol.
+- Support listen HTTP/HTTPS and UNIX addr.
 
 other features are highly active development
 
@@ -296,16 +296,22 @@ Run and listen your web application with default `8080` port.
 g.Run()
 ```
 
-or you can give listen address and another port.
+you can give listen address and another port.
 
 ```go
 g.Run(":8089")
 ```
 
-or serving HTTPS (secure) requests.
+Serving HTTPS (secure) requests.
 
 ```go
 g.RunTLS(":8080", "CertFile", "CertKey")
+```
+
+HTTP requests from the given UNIX addr.
+
+```go
+g.RunUNIX("/tmp/gas.sock", 0644)
 ```
 
 but I recommend setting listen address in config files.

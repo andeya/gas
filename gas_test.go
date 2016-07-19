@@ -8,6 +8,7 @@ import (
 	"github.com/valyala/fasthttp"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"testing"
 	"time"
 )
@@ -164,6 +165,22 @@ func TestRunTLSWithConfig(t *testing.T) {
 	time.Sleep(5 * time.Millisecond)
 
 	testRequest(t, "https://localhost:8089")
+}
+
+func TestRunUNIX(t *testing.T) {
+	g := New()
+
+	// set route
+	g.Router.Get("/", indexPage)
+
+	go func() {
+		assert.NoError(t, g.RunUNIX("gas.sock", 0644))
+	}()
+	time.Sleep(5 * time.Millisecond)
+
+	_, err := os.Stat("gas.sock")
+
+	assert.False(t, os.IsNotExist(err))
 }
 
 func TestGas_NewModel(t *testing.T) {

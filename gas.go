@@ -256,6 +256,16 @@ func (g *Engine) RunTLS(addr ...string) (err error) {
 	return
 }
 
+// RunUNIX serves HTTP requests from the given UNIX addr.
+//
+// The function deletes existing file at addr before starting serving.
+// The server sets the given file mode for the UNIX addr.
+func (g *Engine) RunUNIX(addr string, mode os.FileMode) (err error) {
+
+	err = fasthttp.ListenAndServeUNIX(addr, mode, g.Router.Handler)
+	return
+}
+
 func Logger(next GasHandler) GasHandler {
 	return func(c *Context) error {
 		l := logger.New("log/logs.txt")
