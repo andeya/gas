@@ -161,19 +161,20 @@ func testMiddleware1(next GasHandler) GasHandler {
 	return func(ctx *Context) error {
 		if ctx.GetParam("Test") == "Go" {
 			return next(ctx)
-		} else {
-			return ctx.STRING(http.StatusForbidden, "ERROR")
 		}
+
+		return ctx.STRING(http.StatusForbidden, "ERROR")
 	}
 }
 
 func testMiddleware2(ctx *Context) error {
 	if ctx.GetParam("Test") == "Go" {
+		ctx.Request.PostArgs().Add("FromMiddleware", "200")
 		return ctx.STRING(http.StatusOK, "OK")
-	} else {
-		ctx.Request.PostArgs().Add("FromMiddleware", "NO")
-		return ctx.STRING(http.StatusForbidden, "ERROR-")
 	}
+
+	ctx.Request.PostArgs().Add("FromMiddleware", "NO")
+	return ctx.STRING(http.StatusForbidden, "ERROR-")
 }
 
 func TestRouter_SetGasHandlerAsMiddleware(t *testing.T) {
@@ -187,7 +188,7 @@ func TestRouter_SetGasHandlerAsMiddleware(t *testing.T) {
 
 	e := newHttpExpect(t, g.Router.Handler)
 	e.GET("/test").WithFormField("Test", "Go").
-		Expect().Status(http.StatusOK).Body().Equal("OK")
+		Expect().Status(http.StatusOK).Body().Equal("OK200")
 
 	e.GET("/test").WithFormField("Test", "DontGo").
 		Expect().Status(http.StatusForbidden).Body().Equal("ERROR-NO")
