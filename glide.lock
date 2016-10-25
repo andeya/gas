@@ -1,15 +1,10 @@
 hash: 5a51f136e147d99156f0d8ef7e509b8824f86e40705efdc72b525c17911c959c
-updated: 2016-07-18T15:07:25.073353676+08:00
+updated: 2016-10-25T16:53:19.21411797+08:00
 imports:
 - name: github.com/buaazp/fasthttprouter
-  version: 0729217d031ab353a3e34b94e8544e167f7ce9a4
+  version: 5396e5b544db47fab9bce89929cd4c05df3b3de0
 - name: github.com/go-gas/config
   version: bd804a36813864404b13dfd13fd8b2d9c5451aa4
-- name: github.com/go-gas/gas
-  version: 7d5c53dfb3c5f32ab4b1ae11b620e3e79a4cc242
-  subpackages:
-  - model
-  - model/MySQL
 - name: github.com/go-gas/logger
   version: 9bb1d42dbc536390cc52d8cb0c1c6cefc2da4fe9
 - name: github.com/go-gas/sessions
