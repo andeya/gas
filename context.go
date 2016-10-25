@@ -3,12 +3,12 @@ package gas
 import (
 	"encoding/json"
 	"errors"
-	"github.com/buaazp/fasthttprouter"
+	"html/template"
+	"time"
+
 	"github.com/go-gas/gas/model"
 	"github.com/go-gas/sessions"
 	"github.com/valyala/fasthttp"
-	"html/template"
-	"time"
 )
 
 // H is JSON Data Type
@@ -20,7 +20,6 @@ type Context struct {
 
 	//RespWriter *ResponseWriter
 	//Req        *fasthttp.Request
-	ps *fasthttprouter.Params
 
 	// handlerFunc CHandler
 
@@ -71,12 +70,11 @@ func createContext(r *fasthttp.RequestCtx, g *Engine) *Context {
 //func (ctx *Context) reset(w http.ResponseWriter, r *http.Request, g *Engine) {
 //	ctx.Req = r
 //func (ctx *Context) reset(w http.ResponseWriter, r *http.Request, g *Goslim) {
-func (ctx *Context) reset(fctx *fasthttp.RequestCtx, ps *fasthttprouter.Params, g *Engine) {
+func (ctx *Context) reset(fctx *fasthttp.RequestCtx, g *Engine) {
 
 	//ctx.Req = fctx.Request
 	//ctx.RespWriter.reset(w)
 	ctx.RequestCtx = fctx
-	ctx.ps = ps
 	ctx.gas = g
 
 	ctx.mobj = nil
@@ -104,7 +102,7 @@ func (ctx *Context) GetParam(name string) string {
 		return string(fv)
 	}
 
-	return ctx.ps.ByName(name)
+	return ctx.UserValue(name).(string)
 }
 
 //func (ctx *Context) GetFormValue(name string) string {

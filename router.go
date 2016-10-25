@@ -1,10 +1,11 @@
 package gas
 
 import (
-	"github.com/buaazp/fasthttprouter"
-	"github.com/valyala/fasthttp"
 	"reflect"
 	"strings"
+
+	"github.com/buaazp/fasthttprouter"
+	"github.com/valyala/fasthttp"
 )
 
 var supportRestProto = [7]string{"GET", "POST", "DELETE", "HEAD", "OPTIONS", "PUT", "PATCH"}
@@ -66,11 +67,11 @@ func newRouter(g *Engine) *Router {
 //	}
 //}
 
-func (r *Router) wrapGasHandlerToFasthttpRouterHandler(h GasHandler) fasthttprouter.Handle {
+func (r *Router) wrapGasHandlerToFasthttpRouterHandler(h GasHandler) fasthttp.RequestHandler {
 	// type Handle func(*fasthttp.RequestCtx, Params)
-	return func(ctx *fasthttp.RequestCtx, ps fasthttprouter.Params) {
+	return func(ctx *fasthttp.RequestCtx) {
 		gasCtx := r.g.pool.Get().(*Context)
-		gasCtx.reset(ctx, &ps, r.g)
+		gasCtx.reset(ctx, r.g)
 
 		// chain middleware functions
 		var cpch GasHandler // copy handle avoid repeat chain
@@ -104,7 +105,7 @@ func (r *Router) wrapGasHandlerToFasthttpRouterHandler(h GasHandler) fasthttprou
 func (r *Router) SetNotFoundHandler(h GasHandler) {
 	r.NotFound = func(fctx *fasthttp.RequestCtx) {
 		ctx := r.g.pool.Get().(*Context) //createContext(rw, req)
-		ctx.reset(fctx, nil, r.g)
+		ctx.reset(fctx, r.g)
 
 		// chain middleware functions
 		var cpch GasHandler // copy handle avoid repeat chain
@@ -143,7 +144,7 @@ func (r *Router) SetNotFoundHandler(h GasHandler) {
 func (r *Router) SetPanicHandler(ph PanicHandler) {
 	r.PanicHandler = func(fctx *fasthttp.RequestCtx, rcv interface{}) {
 		ctx := r.g.pool.Get().(*Context) //createContext(rw, req)
-		ctx.reset(fctx, nil, r.g)
+		ctx.reset(fctx, r.g)
 
 		if err := ph(ctx, rcv); err != nil {
 
@@ -304,7 +305,7 @@ func (r *Router) StaticPath(dir string) {
 
 	fsHandler := fs.NewRequestHandler()
 
-	r.GET(path, func(ctx *fasthttp.RequestCtx, _ fasthttprouter.Params) {
+	r.GET(path, func(ctx *fasthttp.RequestCtx) {
 		fsHandler(ctx)
 	})
 }
