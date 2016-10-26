@@ -22,10 +22,19 @@ other features are highly active development
 
 ##### and you can see example at [gas-example](https://github.com/go-gas/example).
 
-## Install
 
+## Start using it
+
+1. Download and install it:
+
+```sh
+$ go get gopkg.in/gas.v0
 ```
-$ go get github.com/go-gas/gas
+
+2. Import it in your code:
+
+```go
+import "gopkg.in/gas.v0"
 ```
 
 ## How to use
